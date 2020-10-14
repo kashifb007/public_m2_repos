@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="referafriendadmin" translate="label" sortOrder="401" class="dreamsites-extensions">
+            <label>DreamSites Extensions</label>
+        </tab>
+        <section id="referafriendadmin" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Refer a Friend Config</label>
+            <tab>referafriendadmin</tab>
+            <resource>DreamSites_Referafriend::configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="refer_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Refer a Friend</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                    
+                </field>
+                <field id="cart_price_rule_id" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cart Price Rule</label>
+                    <source_model>DreamSites\ReferaFriend\Model\Config\Cartoptions</source_model>
+                    <comment>Choose the Cart Price Rule to apply coupon codes from.</comment>
+                    <depends>
+                        <field id="refer_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="coupon_length" translate="label comment" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Coupon Code Length</label>
+                    <validate>required-entry validate-digits validate-not-negative-number validate-digits-range digits-range-4-50</validate>
+                    <comment>Please enter a coupon code length between 4 and 50</comment>
+                    <depends>
+                        <field id="refer_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="code_format" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Code Format</label>
+                    <source_model>DreamSites\ReferaFriend\Model\Config\Couponoptions</source_model>
+                    <depends>
+                        <field id="refer_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="coupon_code_prefix" translate="label comment" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Code Prefix</label>
+                    <depends>
+                        <field id="refer_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="coupon_code_suffix" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Code Suffix</label>
+                    <depends>
+                        <field id="refer_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="dash_every_x_characters" translate="label comment" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Dash Every X Characters</label>
+                    <validate>validate-digits validate-not-negative-number validate-digits-range digits-range-1-20</validate>
+                    <comment>If empty no separation.</comment>
+                    <depends>
+                        <field id="refer_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="image_upload" translate="label" type="image" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Background Image</label>
+                    <backend_model>DreamSites\ReferaFriend\Model\Config\Backend\Image</backend_model>
+                    <base_url type="media" scope_info="1">dreamsites/referafriend</base_url>
+                    <comment><![CDATA[Allowed file types: jpg, jpeg, gif, png]]></comment>
+                </field>
+            </group>           
+        </section>
+    </system>
+</config>

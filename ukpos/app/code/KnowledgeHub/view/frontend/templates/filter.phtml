@@ -1,0 +1,29 @@
+<div class="content-block _--listing-filters">
+<div class="content-block__title-hold">
+    <h2 class="content-block__title">FILTER ARTICLES</h2>
+</div>
+<div class="content-block__content">
+    <dl class="listing-filters">
+        <!-- List Tags -->
+        <dd class="listing-filters__definition _--open">
+            <ul id="topics">
+                <?php
+                foreach ($block->getTags() as $tag) {
+                    echo '<li class="listing-filters__item">
+                                <input type="checkbox"
+                                       data-topic-id="' . $tag->getTagId() . '" 
+                                       id="topic_' . $tag->getTagId() . '" 
+                                       name="topic_' . $tag->getTagId() . '"
+                                       value="topic_' . $tag->getTagId() . '" 
+                                />';
+                    echo ' <label for="topic_' . $tag->getTagId() . '">' . $tag->getTag() . '</label></li>';
+                }
+                ?>
+            </ul>
+            <div class="applied-listing-filters__actions"><a id="clear_topics" class="applied-listing-filters__clear-all"
+                                                             href="#">Clear All</a></div>
+        </dd>
+    </dl>
+    <!-- endregion -->
+</div>
+</div>

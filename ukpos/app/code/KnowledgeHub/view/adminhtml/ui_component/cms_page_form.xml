@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="knowledge_hub" sortOrder="20">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Knowledge Hub</label>
+        </settings>
+        <field name="tag_id" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ukpos\KnowledgeHub\Model\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page</item>
+                    <item name="componentType" xsi:type="string">field</item>
+                    <item name="formElement" xsi:type="string">multiselect</item>
+                    <item name="dataScope" xsi:type="string">tag_id</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                    <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="showCheckbox" xsi:type="boolean">true</item>
+                    <item name="chipsEnabled" xsi:type="boolean">true</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">true</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="listens" xsi:type="array">
+                        <item name="newOption" xsi:type="string">toggleOptionSelected</item>
+                    </item>
+                </item>
+                <item name="source" xsi:type="string">page</item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <dataType>text</dataType>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <dataScope>tag_id</dataScope>
+                <label translate="true">Tag</label>
+                <listens>
+                    <link name="${ $.namespace }.${ $.namespace }:responseData">setParsed</link>
+                </listens>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Ukpos\KnowledgeHub\Model\Config\Source\Options"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="image" formElement="imageUploader">
+            <argument name="class" xsi:type="string">Ukpos\KnowledgeHub\Model\Article\DataProvider</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/uploader/image</elementTmpl>
+                <dataType>string</dataType>
+                <label translate="true">Image</label>
+                <visible>true</visible>
+                <required>false</required>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <required>false</required>
+                        <uploaderConfig>
+                            <param xsi:type="url" name="url" path="article_image/upload"/>
+                        </uploaderConfig>
+                        <previewTmpl>Ukpos_KnowledgeHub/image-preview</previewTmpl>
+                        <openDialogTitle>Media Gallery</openDialogTitle>
+                        <initialMediaGalleryOpenSubpath>cms_page/upload</initialMediaGalleryOpenSubpath>
+                        <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                        <maxFileSize>4194304</maxFileSize>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
+        <field name="stand_first" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Stand First</label>
+                <dataScope>stand_first</dataScope>
+            </settings>
+        </field>
+        <field name="sort_order_date" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page</item>
+                    <item name="templates" xsi:type="array">
+                        <item name="date" xsi:type="array">
+                            <item name="options" xsi:type="array">
+                                <item name="dateFormat" xsi:type="string">dd/MM/y</item>
+                            </item>
+                            <item name="outputDateFormat" xsi:type="string">dd/MM/y</item>
+                            <item name="inputDateFormat" xsi:type="string">yyyy-MM-dd</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Sort Order Date</label>
+                <dataScope>sort_order_date</dataScope>
+            </settings>
+        </field>
+        <field name="author" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Author</label>
+                <dataScope>author</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+</form>

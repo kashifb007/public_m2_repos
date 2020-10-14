@@ -1,0 +1,13 @@
+<page layout="2columns-left" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<body>
+<referenceBlock name="category.product.addto.compare" remove="true" />
+ <!-- <referenceBlock name="category.product.addto.wishlist" remove="true" /> -->
+ <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+<!--  <referenceContainer name="content">
+	<container name="menu_opacity_container" before="toolbar.toolbar-products">
+	            <block class="Magento\Framework\View\Element\Template" name="menu_opacity" template="Magento_Theme::html/menu-opacity.phtml" />
+	</container>
+</referenceContainer> -->
+<!-- <block class="Melza\Allcategories\Block\Categories" name="concretemix_index" template="Melza_Allcategories::list-categories.phtml" /> -->
+</body>
+</page>

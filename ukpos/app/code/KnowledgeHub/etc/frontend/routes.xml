@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation= "urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="knowledgehub" frontName="knowledge-hub">
+            <module name="Ukpos_KnowledgeHub" />
+        </route>
+    </router>
+</config>

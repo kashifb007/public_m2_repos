@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Knowledge Hub</title>
+        <css src="css/knowledge-hub-styles.css" />
+        <script src="js/page/knowledge-hub/requirejs-config.js"/>
+    </head>
+    <body>
+        <attribute name="class" value="knowledge-hub"/>
+        <referenceContainer name="sidebar.main" htmlTag="aside" htmlClass="_--listing-filters _--knowledge-hub-filters">
+                <block class="Ukpos\KnowledgeHub\Block\Filter" name="filter" template="Ukpos_KnowledgeHub::filter.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="page.main.title" display="false"/>
+        <referenceContainer name="content" htmlTag="div" htmlClass="_--knowledge-hub _--title-orange-no-caps _--title-left">
+            <block class="Ukpos\KnowledgeHub\Block\Index" name="index" template="Ukpos_KnowledgeHub::index.phtml" />
+        </referenceContainer>
+    </body>
+</page>

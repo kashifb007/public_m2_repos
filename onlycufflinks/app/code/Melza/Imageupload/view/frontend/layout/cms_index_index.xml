@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Home Images</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Melza\Imageupload\Block\ImageList" name="imageList" template="Melza_Imageupload::home_images.phtml" />
+        </referenceContainer>
+        <referenceBlock name="page.main.title" display="false"/>        
+    </body>
+</page>

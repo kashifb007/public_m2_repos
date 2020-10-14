@@ -1,0 +1,15 @@
+<div id="dreamsites_referafriend">
+<h1><?php echo __('Refer a Friend'); ?></h1>
+<h2>Introduce a friend to <?php echo $this->getStoreName(); ?> and <?php echo $this->getCouponAction(); ?></h2>
+<h3>Your friend will also <?php echo $this->getCouponAction(); ?></h3>
+<h4>Simply share by using your name and email address.</h4>
+<p>Both email addresses will be added into our mailing list, but in line with GDPR you may unsubscribe at any time</p>
+<form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="ds_referafriend_signup">
+<input type="text" id="firstname" name="firstname" placeholder="<?php echo __('Your first name'); ?>" required />
+<input type="text" id="lastname" name="lastname" placeholder="<?php echo __('Your surname'); ?>" required />
+<input type="email" id="email" name="email" placeholder="<?php echo __('Your email address'); ?>" required />
+<input type="email" id="friends_email" name="friends_email" placeholder="<?php echo __('Your friend&#39;s email address'); ?>" required />
+<input type="text" id="friends_name" name="friends_name" placeholder="<?php echo __('Your friend&#39;s name'); ?>" required />
+<button type="submit" title="<?php echo __('Get Discount!') ?>" class="refer_button"><span><span><?php echo __('Get Discount!') ?></span></span></button>
+</form>
+</div>

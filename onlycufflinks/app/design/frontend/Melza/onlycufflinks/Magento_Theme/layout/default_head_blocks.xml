@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<head>
+	<!-- <script src="js/filters.js" defer="defer"/> -->
+	<!-- <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js" src_type="url"></script>
+	<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js" src_type="url"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" src_type="url"></script> -->
+	<css src="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" src_type="url" />
+	<!-- <css src="//jqueryui.com/jquery-wp-content/themes/jqueryui.com/style.css" src_type="url" /> -->
+	<css src="css/slick.css" />	
+	<css src="css/bootstrap.min.css" />	
+	<css src="css/bootstrap-theme.min.css" />		
+	<css src="css/slick-theme.css" />		
+</head>
+</page>
