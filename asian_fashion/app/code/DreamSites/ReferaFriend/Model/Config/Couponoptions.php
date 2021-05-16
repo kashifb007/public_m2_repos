@@ -5,12 +5,15 @@ namespace DreamSites\ReferaFriend\Model\Config;
 use Magento\Framework\Option\ArrayInterface;
 
 class Couponoptions implements ArrayInterface
-{   
+{
 
-	const COUPON_FORMAT_ALPHANUMERIC = 'alphanum';
-    const COUPON_FORMAT_ALPHABETICAL = 'alpha';
-    const COUPON_FORMAT_NUMERIC = 'num';
+    public const COUPON_FORMAT_ALPHANUMERIC = 'alphanum';
+    public const COUPON_FORMAT_ALPHABETICAL = 'alpha';
+    public const COUPON_FORMAT_NUMERIC = 'num';
 
+    /**
+     * @return array
+     */
     public function toOptionArray()
     {
         return [

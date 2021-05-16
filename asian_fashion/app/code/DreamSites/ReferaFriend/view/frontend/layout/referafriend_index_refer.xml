@@ -1,0 +1,15 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd"
+      layout="1column">
+    <head>
+        <title>Refer a Friend</title>
+        <css src="DreamSites_ReferaFriend::css/style.css"/>
+    </head>
+    <body>
+        <referenceBlock name="page.main.title" display="false"/>
+        <referenceContainer name="page.messages">
+            <block class="Magento\Framework\View\Element\Template" name="ajax.message.placeholder" template="Magento_Theme::html/messages.phtml"/>
+            <block class="Magento\Framework\View\Element\Messages" name="messages" as="messages" template="Magento_Theme::messages.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

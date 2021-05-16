@@ -4,5 +4,8 @@
         <route frontName="referafriend" id="referafriend">
             <module name="DreamSites_ReferaFriend"/>
         </route>
+        <route frontName="referral_completed" id="refer">
+            <module name="DreamSites_ReferaFriend"/>
+        </route>
     </router>
 </config>

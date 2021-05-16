@@ -2,11 +2,13 @@
 
 namespace DreamSites\ReferaFriend\Controller\Adminhtml\Referlist;
 
+use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\Component\MassAction\Filter;
-use DreamSites\ReferaFriend\Model\ResourceModel\Refer\CollectionFactory;
 use Magento\Backend\App\Action;
+use DreamSites\ReferaFriend\Model\ResourceModel\Refer\CollectionFactory;
 
 class MassDelete extends Action
 {
@@ -35,7 +37,8 @@ class MassDelete extends Action
     /**
      * Execute action
      *
-     * @return \Magento\Backend\Model\View\Result\Redirect
+     * @return Redirect
+     * @throws LocalizedException
      */
     public function execute()
     {
@@ -48,7 +51,7 @@ class MassDelete extends Action
 
         $this->messageManager->addSuccess(__('A total of %1 record(s) have been deleted.', $collectionSize));
 
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         return $resultRedirect->setPath('*/*/');
     }

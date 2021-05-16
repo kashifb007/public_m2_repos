@@ -1,18 +1,17 @@
 <?php
+
 namespace DreamSites\ReferaFriend\Block;
 
 use DreamSites\ReferaFriend\Model\ResourceModel\Refer\CollectionFactory;
 use Magento\Framework\View\Element\Template;
-use DreamSites\ReferaFriend\Model\ResourceModel\Refer\Collection as ReferCollection;
-use Magento\Store\Model\ScopeInterface;
 
 class ReferList extends Template
 {
 
     /**
-     * @var CollectionFactory
+     * @var CollectionFactory CollectionFactory
      */
-    protected $_referColFactory;
+    protected $referColFactory;
 
     /**
      * ReferList constructor.
@@ -25,12 +24,11 @@ class ReferList extends Template
         CollectionFactory $collectionFactory,
         array $data = []
     ) {
-        $this->_referColFactory = $collectionFactory;
+        $this->referColFactory = $collectionFactory;
         $this->removeButton('add');
         parent::__construct(
             $context,
             $data
         );
     }
-
-} 
+}

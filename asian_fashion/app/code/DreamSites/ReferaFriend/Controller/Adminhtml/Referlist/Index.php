@@ -2,9 +2,10 @@
 
 namespace DreamSites\ReferaFriend\Controller\Adminhtml\Referlist;
 
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action as BackendAction;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\View\Result\PageFactory;
 
 class Index extends BackendAction
 {
@@ -20,8 +21,7 @@ class Index extends BackendAction
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
     }
@@ -39,11 +39,11 @@ class Index extends BackendAction
     /**
      * Index action
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
     public function execute()
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('DreamSites_ReferaFriend::referlist');
         $resultPage->addBreadcrumb(__('CMS'), __('CMS'));

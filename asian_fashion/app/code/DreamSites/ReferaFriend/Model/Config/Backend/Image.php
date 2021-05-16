@@ -8,6 +8,7 @@
  * @copyright    Copyright (c) 2016 MageVision (https://www.magevision.com)
  * @license      http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 namespace DreamSites\ReferaFriend\Model\Config\Backend;
 
 class Image extends \Magento\Config\Model\Config\Backend\Image
@@ -15,7 +16,7 @@ class Image extends \Magento\Config\Model\Config\Backend\Image
     /**
      * The tail part of directory path for uploading
      */
-    const UPLOAD_DIR = 'dreamsites/referafriend';
+    public const UPLOAD_DIR = 'dreamsites/referafriend';
 
     /**
      * Upload max file size in kilobytes
@@ -23,8 +24,8 @@ class Image extends \Magento\Config\Model\Config\Backend\Image
      * @var int
      */
     protected $_maxFileSize = 4096;
-    
-   /**
+
+    /**
      * Return path to directory for upload file
      *
      * @return string
@@ -40,7 +41,7 @@ class Image extends \Magento\Config\Model\Config\Backend\Image
      *
      * @return boolean
      */
-    protected function _addWhetherScopeInfo()
+    protected function _addWhetherScopeInfo(): bool
     {
         return true;
     }
@@ -50,7 +51,7 @@ class Image extends \Magento\Config\Model\Config\Backend\Image
      *
      * @return string[]
      */
-    protected function _getAllowedExtensions()
+    protected function _getAllowedExtensions(): array
     {
         return ['jpg', 'jpeg', 'gif', 'png'];
     }
@@ -58,7 +59,7 @@ class Image extends \Magento\Config\Model\Config\Backend\Image
     /**
      * @return string|null
      */
-    protected function getTmpFileName()
+    protected function getTmpFileName(): ?string
     {
         $tmpName = null;
         if (isset($_FILES['groups'])) {

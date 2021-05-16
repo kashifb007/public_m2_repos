@@ -2,11 +2,8 @@
 /**
  * Save refer form data
  */
+
 namespace DreamSites\ReferaFriend\Controller\Adminhtml\Referlist;
-
-use Magento\Framework\Filesystem;
-
-use Magento\MediaStorage\Model\File\UploaderFactory;
 
 use Magento\Backend\App\Action;
 
@@ -62,9 +59,9 @@ class Save extends Action
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\Filesystem\DirectoryList $dir
     ) {
-        $this->context = $context;        
+        $this->context = $context;
         $this->_coreRegistry = $coreRegistry;
-        $this->referFactory = $referFactory;        
+        $this->referFactory = $referFactory;
         $this->resultForwardFactory = $resultForwardFactory;
         $this->resultPageFactory = $resultPageFactory;
         $this->_fileUploaderFactory = $fileUploaderFactory;
@@ -91,50 +88,47 @@ class Save extends Action
         $id = $this->getRequest()->getParam('image_id');
         $resultRedirect = $this->resultRedirectFactory->create();
         try {
-            $data = $this->getRequest()->getParams();    
+            $data = $this->getRequest()->getParams();
 
             if ($id !== null) {
                 //update
                 $referData = $this->referFactory->create()->load((int)$id);
                 $data['update_time'] = date('Y/m/d H:i:s');
                 $data['store_id'] = implode(",", $this->getRequest()->getPostValue('store_id'));
-                $data['filename'] = str_replace('/home/', '', $this->getRequest()->getPostValue('filename')['value']);                
+                $data['filename'] = str_replace('/home/', '', $this->getRequest()->getPostValue('filename')['value']);
             } else {
                 $data['creation_time'] = date('Y/m/d H:i:s');
                 $data['update_time'] = date('Y/m/d H:i:s');
                 $referData = $this->referFactory->create();
             }
-            
-            //////////////////////            
-                /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
-                if(($_FILES['filename']['name'] !== '') && isset($_FILES['filename']['name']))
-                {
-                        try{
-                            $directory = $this->_dir->getPath('media').'/home/';
-                            $uploader = $this->_fileUploaderFactory->create(['fileId' => 'filename']);
-                            /** Allowed extension types */
-                            $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
-                            /** rename file name if already exists */
-                            $uploader->setAllowRenameFiles(false);
-                            $uploader->setFilesDispersion(false);
-                            $uploader->setAllowCreateFolders(false);
-                            /** upload file in folder "mycustomfolder" */
-                            $result = $uploader->save($directory);
-                            if ($result['file']) {
-                                $this->messageManager->addSuccess(__('File has been successfully uploaded')); 
-                            }
-                        } catch (\Exception $e) {
-                            $this->messageManager->addError($e->getMessage());
-                        }
-                //end block upload image
+
             //////////////////////
-            
+            /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
+            if (($_FILES['filename']['name'] !== '') && isset($_FILES['filename']['name'])) {
+                try {
+                    $directory = $this->_dir->getPath('media') . '/home/';
+                    $uploader = $this->_fileUploaderFactory->create(['fileId' => 'filename']);
+                    /** Allowed extension types */
+                    $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
+                    /** rename file name if already exists */
+                    $uploader->setAllowRenameFiles(false);
+                    $uploader->setFilesDispersion(false);
+                    $uploader->setAllowCreateFolders(false);
+                    /** upload file in folder "mycustomfolder" */
+                    $result = $uploader->save($directory);
+                    if ($result['file']) {
+                        $this->messageManager->addSuccess(__('File has been successfully uploaded'));
+                    }
+                } catch (\Exception $e) {
+                    $this->messageManager->addError($e->getMessage());
+                }
+                //end block upload image
+                //////////////////////
 
-            if ($result['file']) {
-                $data['filename'] = str_replace(' ', '_',trim(addslashes($_FILES['filename']['name'])));
+                if ($result['file']) {
+                    $data['filename'] = str_replace(' ', '_', trim(addslashes($_FILES['filename']['name'])));
+                }
             }
-
-            } 
 
             $referData->setData($data)->save();
 
@@ -148,5 +142,4 @@ class Save extends Action
         }
         return $resultRedirect;
     }
-
-} 
+}

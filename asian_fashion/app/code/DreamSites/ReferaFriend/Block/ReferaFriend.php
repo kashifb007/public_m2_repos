@@ -1,50 +1,69 @@
 <?php
+
 namespace DreamSites\ReferaFriend\Block;
- 
+
+use DreamSites\ReferaFriend\Model\ResourceModel\Refer\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\View\Element\Template\Context;
 use Magento\SalesRule\Model\Rule;
 
 class ReferaFriend extends \Magento\Framework\View\Element\Template
-{    
-    const DISCOUNT_ACTION_BY_PERCENT = 'by_percent';
-    const DISCOUNT_ACTION_FIXED_AMOUNT = 'by_fixed';
-    const DISCOUNT_ACTION_FIXED_AMOUNT_FOR_CART = 'cart_fixed';
-    const DISCOUNT_ACTION_BUY_X_GET_Y = 'buy_x_get_y';
+{
+    public const DISCOUNT_ACTION_BY_PERCENT = 'by_percent';
+    public const DISCOUNT_ACTION_FIXED_AMOUNT = 'by_fixed';
+    public const DISCOUNT_ACTION_FIXED_AMOUNT_FOR_CART = 'cart_fixed';
+    public const DISCOUNT_ACTION_BUY_X_GET_Y = 'buy_x_get_y';
 
     protected $scopeConfig;
 
     protected $rule;
 
-    protected $_referColFactory;
+    protected $referColFactory;
 
-    protected $_referCollection;
+    protected $referCollection;
 
+    /**
+     * ReferaFriend constructor.
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Rule $rule
+     * @param Context $context
+     * @param CollectionFactory $collectionFactory
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         Rule $rule,
-        \Magento\Framework\View\Element\Template\Context $context,
-        \DreamSites\ReferaFriend\Model\ResourceModel\Refer\CollectionFactory $collectionFactory
+        Context $context,
+        CollectionFactory $collectionFactory
     ) {
-        $this->_referColFactory = $collectionFactory;
+        $this->referColFactory = $collectionFactory;
         $this->scopeConfig = $scopeConfig;
         $this->rule = $rule;
         parent::__construct($context, []);
     }
 
+    /**
+     * @return string
+     */
     public function getFormActionUrl()
     {
-    	//change this to secure when launching live
-        return $this->getUrl('referafriend/index/refer', array('_secure' => false));
+        //change this to secure when launching live
+        return $this->getUrl('referafriend/index/refer', ['_secure' => false]);
     }
 
+    /**
+     * @return mixed
+     */
     public function getStoreName()
-	{
-	    return $this->_scopeConfig->getValue(
-	        'general/store_information/name',
-	        \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-	    );
-	}
+    {
+        return $this->scopeConfig->getValue(
+            'general/store_information/name',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
 
+    /**
+     * @return string
+     */
     public function getCouponAction()
     {
         $ruleId = $this->scopeConfig->getValue('referafriendadmin/general/cart_price_rule_id', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
@@ -71,16 +90,17 @@ class ReferaFriend extends \Magento\Framework\View\Element\Template
                 break;
             case self::DISCOUNT_ACTION_BUY_X_GET_Y:
                 return "buy one get one free.";
-                break;          
+                break;
             default:
                 return "receive " . $discountAmount . "% off.";
                 break;
         }
     }
 
+    /**
+     *
+     */
     public function getBackgroundImage()
     {
-
     }
-
 }

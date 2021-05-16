@@ -1,4 +1,5 @@
 <?php
+
 namespace DreamSites\ReferaFriend\Controller\Adminhtml\Referlist;
 
 use Magento\Backend\App\Action;
@@ -7,7 +8,6 @@ use Magento\Backend\Model\View\Result\Page;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
-
 
 class Edit extends Action
 {
@@ -66,4 +66,4 @@ class Edit extends Action
     {
         return $this->resultForwardFactory->create()->forward('new');
     }
-} 
+}

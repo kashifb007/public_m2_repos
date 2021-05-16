@@ -2,6 +2,7 @@
 /**
  * New Refer Item
  */
+
 namespace DreamSites\ReferaFriend\Controller\Adminhtml\Referlist;
 
 use Magento\Backend\App\Action;
@@ -86,4 +87,4 @@ class NewAction extends Action
 
         return $resultPage;
     }
-} 
+}

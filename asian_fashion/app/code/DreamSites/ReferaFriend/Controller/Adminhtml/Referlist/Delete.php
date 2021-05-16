@@ -2,6 +2,7 @@
 /**
  * Delete controller
  */
+
 namespace DreamSites\ReferaFriend\Controller\Adminhtml\Referlist;
 
 use Magento\Backend\App\Action;
@@ -51,4 +52,4 @@ class Delete extends Action
         // go to grid
         return $resultRedirect->setPath('*/*/');
     }
-} 
+}

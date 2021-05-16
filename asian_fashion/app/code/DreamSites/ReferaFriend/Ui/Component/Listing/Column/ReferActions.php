@@ -1,22 +1,27 @@
 <?php
+
 namespace DreamSites\ReferaFriend\Ui\Component\Listing\Column;
 
+use Magento\Cms\Block\Adminhtml\Page\Grid\Renderer\Action\UrlBuilder;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
-use Magento\Cms\Block\Adminhtml\Page\Grid\Renderer\Action\UrlBuilder;
-use Magento\Framework\UrlInterface;
 
 class ReferActions extends Column
 {
     /** Url path */
-    const REFER_URL_PATH_EDIT = 'referral/referlist/edit';
-    const REFER_URL_PATH_DELETE = 'referral/referlist/delete';
+    public const REFER_URL_PATH_EDIT = 'referral/referlist/edit';
+    public const REFER_URL_PATH_DELETE = 'referral/referlist/delete';
 
-    /** @var UrlBuilder */
+    /**
+     * @var UrlBuilder
+     */
     protected $actionUrlBuilder;
 
-    /** @var UrlInterface */
+    /**
+     * @var UrlInterface
+     */
     protected $urlBuilder;
 
     /**

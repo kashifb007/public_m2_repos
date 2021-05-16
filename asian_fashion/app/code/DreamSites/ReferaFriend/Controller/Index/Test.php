@@ -1,24 +1,29 @@
 <?php
 namespace DreamSites\ReferaFriend\Controller\Index;
 
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\View\Result\PageFactory;
+
 class Test extends \Magento\Framework\App\Action\Action
 {
-	protected $_pageFactory;
+    /**
+     * @var PageFactory
+     */
+    protected $pageFactory;
 
-	public function __construct(
-		\Magento\Framework\App\Action\Context $context,
-		\Magento\Framework\View\Result\PageFactory $pageFactory)
-	{
-		$this->_pageFactory = $pageFactory;
-		return parent::__construct($context);
-	}
+    public function __construct(
+        Context $context,
+        PageFactory $pageFactory
+    ) {
+        $this->pageFactory = $pageFactory;
+        return parent::__construct($context);
+    }
 
-	public function execute()
-	{
-		///referafriend/index/test
+    public function execute()
+    {
+        ///referafriend/index/test
 
-
-		echo "Referral Complete";
-		exit;
-	}
+        echo "Referral Complete";
+        exit;
+    }
 }

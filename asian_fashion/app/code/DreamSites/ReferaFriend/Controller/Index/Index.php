@@ -2,20 +2,34 @@
 namespace DreamSites\ReferaFriend\Controller\Index;
 
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\View\Result\Page;
+use Magento\Framework\View\Result\PageFactory;
 
 class Index extends \Magento\Framework\App\Action\Action
 {
-	protected $_resultPageFactory;
+    /**
+     * @var PageFactory
+     */
+    protected $resultPageFactory;
 
-	public function __construct(Context $context, \Magento\Framework\View\Result\PageFactory $resultPageFactory)
+    /**
+     * Index constructor.
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     */
+    public function __construct(Context $context, PageFactory $resultPageFactory)
     {
-        $this->_resultPageFactory = $resultPageFactory;
+        $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
 
-	public function execute()
-	{
-        return $this->_resultPageFactory->create();
-	}
-
+    /**
+     * @return ResponseInterface|ResultInterface|Page
+     */
+    public function execute()
+    {
+        return $this->resultPageFactory->create();
+    }
 }

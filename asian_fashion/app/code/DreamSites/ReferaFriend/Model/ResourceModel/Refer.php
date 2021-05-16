@@ -1,5 +1,7 @@
 <?php
+
 namespace DreamSites\ReferaFriend\Model\ResourceModel;
+
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class Refer extends AbstractDb
@@ -16,17 +18,18 @@ class Refer extends AbstractDb
         \Magento\Framework\Model\ResourceModel\Db\Context $context,
         \Magento\Framework\Stdlib\DateTime\DateTime $date,
         $connectionName = null
-    ) {
+    )
+    {
         parent::__construct($context, $connectionName);
         $this->_date = $date;
     }
-	
-/**
-* Initialize resource model
-* @return void
-*/
+
+    /**
+     * Initialize resource model
+     * @return void
+     */
     protected function _construct()
     {
-     $this->_init('dreamsites_referafriend', 'refer_id');
+        $this->_init('dreamsites_referafriend', 'refer_id');
     }
 }
