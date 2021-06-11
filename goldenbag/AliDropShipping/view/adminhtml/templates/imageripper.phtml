@@ -1,0 +1,135 @@
+<?php // $block->getBlockHtml('formkey') ?>
+<fieldset class="admin__fieldset">
+
+    <div class="admin__field">
+        <div class="admin__field-label">
+            <label for="number">
+                <span><?php echo __('AliExpress Url') ?></span>
+            </label>
+        </div>
+
+        <div class="admin__field-control">
+            <input type="text" id="ali_url"
+                   name="ali_url" value="https://www.aliexpress.com/item/1005001497299425.html?spm=a2g0o.detail.0.0.722a9b74oahbxM&gps-id=pcDetailBottomMoreThisSeller&scm=1007.13339.169870.0&scm_id=1007.13339.169870.0&scm-url=1007.13339.169870.0&pvid=bd845d36-8dbb-4b25-a828-0d7d09c1beb8&_t=gps-id:pcDetailBottomMoreThisSeller,scm-url:1007.13339.169870.0,pvid:bd845d36-8dbb-4b25-a828-0d7d09c1beb8,tpp_buckets:668%230%23131923%2379_668%230%23131923%2379_668%23888%233325%2313_668%23888%233325%2313_668%232846%238109%231935_668%235811%2327185%2369_668%232717%237560%23246_668%231000022185%231000066059%230_668%233468%2315607%2314_668%232846%238109%231935_668%235811%2327185%2369_668%232717%237560%23246_668%233164%239976%23736_668%233468%2315607%2314"
+                   class="admin__control-text">
+        </div>
+    </div>
+
+    <div class="admin__field">
+        <div class="admin__field-label">
+            <label for="clear_current">
+                <span><?php echo __('Clear current images before import') ?></span>
+            </label>
+        </div>
+
+        <div class="admin__field-control">
+            <input type="checkbox" id="clear_current" name="clear_current" value="1" checked="checked" />
+        </div>
+    </div>
+
+    <div class="admin__field">
+
+        <div class="admin__field-label">
+        </div>
+
+        <div class="admin__field-control">
+
+            <button id="import_images" type="button" class="action submit primary"
+                    title="<?php echo __('Scan Images') ?>">
+                <span><?php echo __('Scan Images') ?></span>
+            </button>
+
+            <button id="clear_images" type="button" class="action-basic"
+                    title="<?php echo __('Clear Scanned Images') ?>">
+                <span><?php echo __('Clear Scanned Images') ?></span>
+            </button>
+
+        </div>
+
+</fieldset>
+<span id="ripped_images_message"></span>
+<style>
+    #image_list > img {
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+<div id="image_list">
+    <?php
+    for ($x = 0; $x < 6; $x++) {
+        echo "<img src='' id='image_$x' width='75' height='75' style='display:none;' />";
+    }
+    ?>
+</div>
+<script>
+    require([
+        'jquery',
+        'prototype'
+    ], function ($) {
+
+        $('#import_images').click(function () {
+            var params = {
+                url: $("#ali_url").val(),
+                checked: $('#clear_current').prop('checked')
+            };
+            new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
+                parameters: params,
+                loaderArea: false,
+                asynchronous: true,
+                onCreate: function () {
+                    $('#image_1').attr('src', '');
+                    var body = $('body').loader();
+                    body.loader('show');
+                },
+                onSuccess: function (transport) {
+                    var body = $('body').loader();
+                    body.loader('hide');
+                    for (i = 0; i < 6; i++) {
+                        $('#image_' + i).css('display', 'none');
+                    }
+                    var resultText = '';
+                    if (transport.status > 200) {
+                        resultText = transport.statusText;
+                    } else {
+                        var response = JSON.parse(transport.responseText);
+                        resultText = response.message;
+                        var errorText = response.errorMessage;
+                    }
+                    if (errorText) {
+                        $('#ripped_images_message').text(errorText);
+                    } else {
+                        var imgArray = resultText.split('|');
+                        imgArray.forEach(loopFunction);
+
+                        function loopFunction(item, index) {
+                            $('#image_' + index).attr('src', item).css('display', 'block');
+                        }
+                    }
+                }
+            });
+        });
+        $('#clear_images').click(function () {
+            var params = [];
+            new Ajax.Request('<?php echo $block->getClearUrl() ?>', {
+                parameters: params,
+                loaderArea: false,
+                asynchronous: true,
+                onCreate: function () {
+                    for (i = 0; i < 6; i++) {
+                        $('#image_' + i).css('display', 'none');
+                    }
+                },
+                onSuccess: function (transport) {
+                    var resultText = '';
+                    if (transport.status > 200) {
+                        resultText = transport.statusText;
+                    } else {
+                        var response = JSON.parse(transport.responseText);
+                        resultText = response.message;
+                        var errorText = response.errorMessage;
+                    }
+                }
+            });
+        });
+    });
+</script>

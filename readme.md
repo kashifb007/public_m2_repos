@@ -17,3 +17,6 @@ Some of my Magento 2 sample code.
 
 ## UK POS
 - A "Knowledge Hub" which is a collection of articles, a bit of WordPress functionality but in M2.
+
+## Goldenbag
+- A module to scrape an Ali Express to pull down it's images and save them in a product's image gallery.
