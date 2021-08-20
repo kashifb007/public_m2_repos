@@ -8,7 +8,9 @@
 namespace Dreamsites\AliDropShipping\Observer;
 
 use Magento\Backend\Model\Session as ImageSession;
+use Magento\Catalog\Model\Product\Gallery\Processor;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Catalog\Model\ResourceModel\Product\Gallery;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
@@ -18,6 +20,11 @@ use Magento\Framework\Event\ObserverInterface;
  **/
 class ProductSaveAfter implements ObserverInterface
 {
+    /**
+     * @var Gallery
+     */
+    protected $productGallery;
+
     /**
      * @var ProductRepository
      */
@@ -34,11 +41,13 @@ class ProductSaveAfter implements ObserverInterface
      */
     public function __construct(
         ProductRepository $productRepository,
-        ImageSession $imageSession
+        ImageSession $imageSession,
+        Gallery $productGallery
     )
     {
         $this->productRepository = $productRepository;
         $this->imageSession = $imageSession;
+        $this->productGallery = $productGallery;
     }
 
     /**
@@ -51,25 +60,43 @@ class ProductSaveAfter implements ObserverInterface
 
     /**
      * @param Observer $observer
-     * @throws \Magento\Framework\Exception\CouldNotSaveException
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\StateException
      */
     public function execute(Observer $observer): void
     {
-        if (null !== $this->getImageSession()->getImages()) {
+        if ($this->getImageSession()->getImages() !== null) {
+
             $product = $observer->getProduct();
             $tmpImages = $this->getImageSession()->getImages();
+            $this->getImageSession()->setImages(null);
 
-            //TODO set base, small, thumbnail separately
-
-            foreach ($tmpImages as $img) {
-                $product->addImageToMediaGallery($img, array('image', 'small_image', 'thumbnail'), false, false);
+            //if checked then remove all previous images before uploading
+            if (null !== $this->getImageSession()->getClear()) {
+                $this->getImageSession()->setClear(null);
+                $gallery = $product->getMediaGalleryImages();
+                if (count($gallery) > 0) {
+                    foreach ($gallery as $image) {
+                        $this->productGallery->deleteGallery($image->getValueId());
+                    }
+                    $product->setMediaGalleryEntries([]);
+                }
             }
 
-            $this->getImageSession()->setImages(null);
-            //$savedProduct = $this->productRepository->save($product);
+            $firstpass = true;
+            foreach ($tmpImages as $img) {
+                if ($firstpass) {
+                    $firstpass = false;
+                    $product->setImage(
+                        $img
+                    )->setSmallImage(
+                        $img
+                    )->setThumbnail(
+                        $img
+                    )->addImageToMediaGallery($img, array('image', 'small_image', 'thumbnail'), false, false);
+                } else {
+                    $product->addImageToMediaGallery($img, null, false, false);
+                }
+            }
+
             $product->save();
         }
     }

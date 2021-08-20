@@ -69,8 +69,8 @@ class Clear extends Action
      */
     public function execute()
     {
-        $this->getUrlSession()->unsetIsUrl();
-        $this->getImageSession()->unsetImages();
+        $this->getUrlSession()->setUrl(null);
+        $this->getImageSession()->setImages(null);
 
         /** @var Json $result */
         $result = $this->resultJsonFactory->create();

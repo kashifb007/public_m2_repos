@@ -14,13 +14,20 @@ class ReferaFriend extends \Magento\Framework\View\Element\Template
     public const DISCOUNT_ACTION_FIXED_AMOUNT_FOR_CART = 'cart_fixed';
     public const DISCOUNT_ACTION_BUY_X_GET_Y = 'buy_x_get_y';
 
+    /**
+     * @var ScopeConfigInterface
+     */
     protected $scopeConfig;
 
+    /**
+     * @var Rule
+     */
     protected $rule;
 
+    /**
+     * @var CollectionFactory
+     */
     protected $referColFactory;
-
-    protected $referCollection;
 
     /**
      * ReferaFriend constructor.
@@ -47,7 +54,7 @@ class ReferaFriend extends \Magento\Framework\View\Element\Template
     public function getFormActionUrl()
     {
         //change this to secure when launching live
-        return $this->getUrl('referafriend/index/refer', ['_secure' => false]);
+        return $this->getUrl('referafriend/index/refer');
     }
 
     /**
@@ -66,7 +73,8 @@ class ReferaFriend extends \Magento\Framework\View\Element\Template
      */
     public function getCouponAction()
     {
-        $ruleId = $this->scopeConfig->getValue('referafriendadmin/general/cart_price_rule_id', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        //TODO update these to system.xml section and group values dreamsites_referafriend
+        $ruleId = $this->scopeConfig->getValue('dreamsites_referafriend/general/cart_price_rule_id', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $rule = $this->rule->load($ruleId);
 
         $ruleAction = (string)$rule->getSimpleAction();

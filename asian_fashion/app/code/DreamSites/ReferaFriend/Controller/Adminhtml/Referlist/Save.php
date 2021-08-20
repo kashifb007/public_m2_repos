@@ -117,10 +117,10 @@ class Save extends Action
                     /** upload file in folder "mycustomfolder" */
                     $result = $uploader->save($directory);
                     if ($result['file']) {
-                        $this->messageManager->addSuccess(__('File has been successfully uploaded'));
+                        $this->messageManager->addSuccessMessage(__('File has been successfully uploaded'));
                     }
                 } catch (\Exception $e) {
-                    $this->messageManager->addError($e->getMessage());
+                    $this->messageManager->addErrorMessage($e->getMessage());
                 }
                 //end block upload image
                 //////////////////////
@@ -132,10 +132,10 @@ class Save extends Action
 
             $referData->setData($data)->save();
 
-            $this->messageManager->addSuccess(__('Saved Home Image item.'));
+            $this->messageManager->addSuccessMessage(__('Saved Home Image item.'));
             $resultRedirect->setPath('referral/referlist');
         } catch (\Exception $e) {
-            $this->messageManager->addError($e->getMessage());
+            $this->messageManager->addErrorMessage($e->getMessage());
             $this->_getSession()->setReferData($data);
 
             $resultRedirect->setPath('referral/referlist/edit', ['image_id' => $id]);

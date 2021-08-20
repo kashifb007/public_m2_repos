@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
-    <template id="coupon_template"
+    <template id="dreamsites_referafriend_general_coupon"
               label="Refer a Friend Coupon Email"
               file="coupon_template.html" type="html"
               module="DreamSites_ReferaFriend" area="frontend"/>

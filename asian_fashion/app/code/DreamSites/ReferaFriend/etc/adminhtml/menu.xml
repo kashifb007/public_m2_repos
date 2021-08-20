@@ -3,6 +3,6 @@
     <menu>
         <add id="DreamSites_ReferaFriend::referafriend" title="Refer a Friend" module="DreamSites_ReferaFriend" sortOrder="45" resource="DreamSites_ReferaFriend::referafriend" parent="Magento_Backend::stores"/>
         <add id="DreamSites_ReferaFriend::referlist" title="Referrals History" module="DreamSites_ReferaFriend" sortOrder="10" parent="DreamSites_ReferaFriend::referafriend" action="referral/referlist" resource="DreamSites_ReferaFriend::referlist"/>
-        <add id="DreamSites_ReferaFriend::configuration" title="Configuration" module="DreamSites_ReferaFriend" sortOrder="100" action="adminhtml/system_config/edit/section/referafriendadmin" resource="DreamSites_ReferaFriend::configuration" parent="DreamSites_ReferaFriend::referafriend"/>
+        <add id="DreamSites_ReferaFriend::configuration" title="Configuration" module="DreamSites_ReferaFriend" sortOrder="100" action="adminhtml/system_config/edit/section/dreamsites_referafriend" resource="DreamSites_ReferaFriend::configuration" parent="DreamSites_ReferaFriend::referafriend"/>
     </menu>
 </config>

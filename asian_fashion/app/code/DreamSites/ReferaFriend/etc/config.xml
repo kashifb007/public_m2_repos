@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
 <default>
-   <referafriendadmin>
+   <dreamsites_referafriend>
        <general>
            <coupon_length>12</coupon_length>
            <dash_every_x_characters>0</dash_every_x_characters>
-       </general>
-   </referafriendadmin>
+            <coupon>dreamsites_referafriend_general_coupon</coupon>
+        </general>
+    </dreamsites_referafriend>
 </default>
 </config>

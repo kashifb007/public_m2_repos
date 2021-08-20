@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="referafriendadmin" translate="label" sortOrder="401" class="dreamsites-extensions">
+        <tab id="dreamsites_referafriend" translate="label" sortOrder="401" class="dreamsites-extensions">
             <label>DreamSites Extensions</label>
         </tab>
-        <section id="referafriendadmin" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="dreamsites_referafriend" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Refer a Friend Config</label>
-            <tab>referafriendadmin</tab>
+            <tab>dreamsites_referafriend</tab>
             <resource>DreamSites_Referafriend::configuration</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Configuration</label>
                 <field id="refer_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Refer a Friend</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                    
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="cart_price_rule_id" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Cart Price Rule</label>
@@ -63,7 +63,12 @@
                     <base_url type="media" scope_info="1">dreamsites/referafriend</base_url>
                     <comment><![CDATA[Allowed file types: jpg, jpeg, gif, png]]></comment>
                 </field>
-            </group>           
+                <field id="coupon" translate="label" type="select" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>

@@ -47,7 +47,7 @@ class ConfigObserver implements ObserverInterface
      */
     public function execute(EventObserver $observer)
     {
-        $ruleId = $this->scopeConfig->getValue('referafriendadmin/general/cart_price_rule_id', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        $ruleId = $this->scopeConfig->getValue('dreamsites_referafriend/general/cart_price_rule_id', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 
         $rule = $this->rule->load($ruleId);
 

@@ -5,6 +5,7 @@
 <h4>Simply share by using your name and email address.</h4>
 <p>Both email addresses will be added into our mailing list, but in line with GDPR you may unsubscribe at any time</p>
 <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="ds_referafriend_signup">
+<?php echo $this->getBlockHtml('formkey') ?>
 <input type="text" id="firstname" name="firstname" placeholder="<?php echo __('Your first name'); ?>" required />
 <input type="text" id="lastname" name="lastname" placeholder="<?php echo __('Your surname'); ?>" required />
 <input type="email" id="email" name="email" placeholder="<?php echo __('Your email address'); ?>" required />
