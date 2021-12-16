@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DreamSites_ImageUpload::imagelist" title="Home Images Upload" module="DreamSites_ImageUpload" sortOrder="10" parent="Magento_Backend::content_elements" action="dreamsites/imagelist" resource="DreamSites_ImageUpload::imagelist"/>
+    </menu>
+</config>

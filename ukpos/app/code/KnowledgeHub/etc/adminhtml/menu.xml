@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
-    <menu>
-        <add id="Ukpos_KnowledgeHub::taglist" title="Edit KH Tags" module="Ukpos_KnowledgeHub" sortOrder="10"
-             parent="Magento_Backend::content_elements" action="tag/taglist" resource="Ukpos_KnowledgeHub::taglist"/>
-    </menu>
-</config>

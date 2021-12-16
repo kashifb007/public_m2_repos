@@ -1,0 +1,57 @@
+<div class="carousel">
+<?php
+use Magento\Framework\App\ActionInterface;
+
+$products = $block->getProducts();
+$count = count($products);
+for($x=0; $x<$count; $x++) {
+    /* @var $product \Magento\Catalog\Model\Product */
+    $_product = $products[$x]['product'];
+    ?>
+    <div class="image">
+        <div class="product details product-item-details">
+                <a class="product-item-link"
+                   href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>">
+                    <img class="photo image" alt="<?=/* @noEscape */ $_product->getName()?>"
+                         src="<?= $escaper->escapeUrl($products[$x]['image']) ?>"/>
+                </a>
+            <strong class="product name product-item-name">
+                <a class="product-item-link"
+                   href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>">
+                    <?=/* @noEscape */ $_product->getName()?>
+                </a>
+            </strong>
+        </div>
+        <div class="product-item-inner">
+            <div class="product actions product-item-actions">
+                <div class="actions-primary">
+                    <?php if ($_product->isSaleable()):?>
+                        <?php $postParams = $block->getAddToCartPostParams($_product); ?>
+                        <form data-role="tocart-form"
+                              data-product-sku="<?= $escaper->escapeHtml($_product->getSku()) ?>"
+                              action="<?= $escaper->escapeUrl($postParams['action']) ?>"
+                              method="post">
+                            <input type="hidden"
+                                   name="product"
+                                   value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
+                            <input type="hidden"
+                                   name="<?= /* @noEscape */ ActionInterface::PARAM_NAME_URL_ENCODED ?>"
+                                   value="<?=
+                                   /* @noEscape */ $postParams['data'][ActionInterface::PARAM_NAME_URL_ENCODED]
+                                   ?>">
+                            <?= $block->getBlockHtml('formkey') ?>
+                            <button type="submit"
+                                    title="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                    class="action tocart primary">
+                                <span><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+?>
+</div>

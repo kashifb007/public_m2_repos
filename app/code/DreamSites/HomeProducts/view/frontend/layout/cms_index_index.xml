@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Home Carousel</title>
+        <css src="DreamSites_HomeProducts::css/slick.css"/>
+        <css src="DreamSites_HomeProducts::css/carousel.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="DreamSites\HomeProducts\Block\ProductsList" name="category.products.list" template="DreamSites_HomeProducts::carousel.phtml">
+                <block class="Magento\Catalog\Block\Product\ListProduct" name="list.product" />
+            </block>
+        </referenceContainer>
+        <referenceBlock name="page.main.title" display="false"/>
+    </body>
+</page>
