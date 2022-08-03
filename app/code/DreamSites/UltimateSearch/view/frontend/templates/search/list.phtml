@@ -1,0 +1,310 @@
+<div id="searchApp" class="search">
+    <search-image-list></search-image-list>
+</div>
+<script>
+    function debounce(func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    }
+    require([
+        'vue',
+        'alpine',
+        'prototype',
+        'jquery/ui',
+        'jquery',
+        'underscore'], function (Vue) {
+        var searchImageList = Vue.component('search-image-list', {
+            template: `
+                <div class="search__container" x-data="{ open: true }" x-on:click.outside="open = false;">
+                <form class="form minisearch" id="search_mini_form" action="<?php echo $this->getFormSearchUrl(); ?>" method="get">
+                    <input type="text" placeholder="Search" id="search" name="q" v-on:input="debounceInput"
+                    x-on:click="open = true" class="search__input" />
+                </form>
+                    <div v-if="!nodata || (resultCount===0 && query!=='')" class="search__results"
+                         x-show="open"
+                         x-cloak>
+                         <div class="loading" v-if="loading"><img src="<?php echo $this->getViewFileUrl('DreamSites_UltimateSearch::images/loading.gif'); ?>" alt="loading" title="loading" /></div>
+                        <div class="search__legend">
+                            <div class="search__display-mode">
+                                <a href="#" class="search__toggle-link link_mode_grid active" v-on:click="toggleDataMode('grid')" title="Grid View"><i class="fas fa-th"></i></a>
+                                <a href="#" class="search__toggle-link link_mode_list" v-on:click="toggleDataMode('list')" title="List View"><i class="fas fa-list"></i></a>
+                            </div>
+                            <div class="search__results-count">
+                                <span v-text="resultCount"></span><span><?php echo __(" Results for '"); ?></span><span v-text="query"></span><span><?php echo __("'"); ?></span>
+                            </div>
+                            <div class="search__display-sort">
+                                <a href="#" class="search__toggle-link link_sort_relevance active" v-on:click="toggleDataSort('relevance')" title="Relevance"><i class="fas fa-redo"></i></a>
+                                <a href="#" class="search__toggle-link link_sort_asc" v-on:click="toggleDataSort('asc')" title="Price Asc"><i class="fas fa-chevron-up"></i></a>
+                                <a href="#" class="search__toggle-link link_sort_desc" v-on:click="toggleDataSort('desc')" title="Price Desc"><i class="fas fa-chevron-down"></i></a>
+                            </div>
+                        </div>
+                        <div class="search__wrapper" v-on:scroll="scroll" data-mode="grid">
+                            <div v-for="row in allData" class="search__results-item">
+                                <search-image
+                                v-bind:item_id="row.id"
+                                v-bind:item_name="row.name"
+                                v-bind:item_link="row.link"
+                                v-bind:item_desc="row.desc"
+                                v-bind:item_image="row.image"
+                                v-bind:item_price="row.price"
+                                v-bind:item_url="row.url"
+                                v-bind:item_formatted_price="row.formatted_price"
+                                ></search-image>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            data:() => ({
+                allData: [],
+                resultsData: [],
+                resultCount: 0,
+                query: '',
+                nodata: true,
+                loading: false,
+                offset: 0,
+                lastScrollUpdate: 0,
+                dataMode: 'grid',
+                dataSort: 'relevance',
+            }),
+            methods: {
+                debounceInput: debounce(function (e) {
+                    this.query = e.target.value;
+                    if (this.query.length > 2) {
+                        this.search();
+                    } else {
+                        this.allData = [];
+                        this.nodata = true;
+                    }
+                }, 1500),
+                search() {
+                    this.allData = [];
+                    this.resultsData = [];
+                    this.loading = true;
+                    this.offset = 0;
+                    let parameters = {
+                        q: this.query,
+                        form_key: jQuery.cookie('form_key'),
+                        ajax_search: true,
+                        sort: this.dataSort
+                    };
+                    let self = this;
+                    new Ajax.Request('<?php echo $this->getFormSearchUrl(); ?>', {
+                        parameters: parameters,
+                        loaderArea: false,
+                        asynchronous: true,
+                        onSuccess: function (transport) {
+                            // console.log(transport.responseText);
+                            // console.log(transport.status);
+                            if (transport.status > 200) {
+                                //error occurred
+                                console.log('error');
+                                let errorText = transport.responseText;
+                                console.log(errorText);
+                                self.loading = false;
+                                self.allData = [];
+                                self.resultsData = [];
+                                self.nodata = true;
+                                self.offset = 0;
+                            } else {
+                                //successful retrieve data
+                                let response = JSON.parse(transport.responseText);
+                                let thisLength = response.length;
+                                self.resultCount = thisLength;
+                                if(thisLength > 0) {
+                                    for (let i = 0; i < thisLength; i++) {
+                                        self.resultsData.push(response[i]);
+                                    }
+                                    let loopSize = 12;
+                                    if(self.resultCount < 12) {
+                                        loopSize = self.resultCount;
+                                    }
+                                    for (let i = 0; i < loopSize; i++) {
+                                        self.allData.push(self.resultsData[i]);
+                                    }
+                                    self.nodata = false;
+                                }
+                                self.loading = false;
+                            }
+                        }
+                    });
+                },
+                loadMore() {
+                    this.loading = true;
+                    this.nodata = false;
+                    let resultsLeft = 0;
+                    if(this.resultsData.length >= this.allData.length+12) {
+                        resultsLeft = 12;
+                        this.offset += 12;
+                    } else if ((this.resultsData.length-this.allData.length)<12 && (this.resultsData.length-this.allData.length)>0) {
+                        resultsLeft=this.resultsData.length-this.allData.length;
+                        this.offset += resultsLeft;
+                    } else if (this.resultsData.length-this.allData.length===0) {
+                        resultsLeft = 0;
+                        this.loading = false;
+                    }
+                    if(resultsLeft>0) {
+                        this.loading = false;
+                        for (let i = this.offset; i < this.offset+resultsLeft; i++) {
+                            this.allData.push(this.resultsData[i]);
+                        }
+                    }
+                },
+                scroll: function (e) {
+                    let scrollBar = e.target;
+                    if ((scrollBar.scrollTop + scrollBar.clientHeight >= scrollBar.scrollHeight - 20)) {
+                        let t = new Date().getTime();
+                        if ((t - this.lastScrollUpdate) > 500) {
+                            if ((scrollBar.scrollTop + scrollBar.clientHeight >= scrollBar.scrollHeight - 20)) {
+                                this.loadMore();
+                            }
+                        }
+                    }
+                },
+                toggleDataMode: function(mode) {
+                    this.dataMode = mode;
+                    jQuery('.search__wrapper').attr('data-mode', mode);
+                    if(mode === 'grid') {
+                        jQuery('.link_mode_list').removeClass('active');
+                        jQuery('.link_mode_grid').addClass('active');
+                    } else {
+                        jQuery('.link_mode_list').addClass('active');
+                        jQuery('.link_mode_grid').removeClass('active');
+                    }
+                },
+                toggleDataSort: function(sort) {
+                    this.dataSort = sort;
+                    //reorder the AllData array depending on sort
+                    jQuery('.link_sort_relevance').removeClass('active');
+                    jQuery('.link_sort_asc').removeClass('active');
+                    jQuery('.link_sort_desc').removeClass('active');
+                    if(sort === 'relevance') {
+                        this.loading = true;
+                        jQuery('.link_sort_relevance').addClass('active');
+
+                        this.resultsData.sort(function(a, b) {
+                            var keyA = a.id,
+                                keyB = b.id;
+                            if (keyA < keyB) return -1;
+                            if (keyA > keyB) return 1;
+                            return 0;
+                        });
+                        this.allData = [];
+                        for (let i = 0; i < this.offset+12; i++) {
+                            this.allData.push(this.resultsData[i]);
+                        }
+                        this.loading = false;
+                    }
+                    if(sort === 'asc') {
+                        this.loading = true;
+                        jQuery('.link_sort_asc').addClass('active');
+
+                        this.resultsData.sort(function(a, b) {
+                            var keyA = a.price,
+                                keyB = b.price;
+                            if (keyA < keyB) return -1;
+                            if (keyA > keyB) return 1;
+                            return 0;
+                        });
+                        this.allData = [];
+                        for (let i = 0; i < this.offset+12; i++) {
+                            this.allData.push(this.resultsData[i]);
+                        }
+                        this.loading = false;
+                    }
+                    if(sort === 'desc') {
+                        this.loading = true;
+                        jQuery('.link_sort_desc').addClass('active');
+
+                        this.resultsData.sort(function(a, b) {
+                            var keyA = a.price,
+                                keyB = b.price;
+                            if (keyA < keyB) return 1;
+                            if (keyA > keyB) return -1;
+                            return 0;
+                        });
+                        this.allData = [];
+                        for (let i = 0; i < this.offset+12; i++) {
+                            this.allData.push(this.resultsData[i]);
+                        }
+                        this.loading = false;
+                    }
+                },
+            },
+        });
+
+        var searchImage = Vue.component('search-image', {
+            template: `
+            <a v-bind:href="item_url" class="search__link">
+                <div class="image__container">
+                    <img v-bind:src="item_image" class="search__image" />
+                </div>
+                <div class="search__copy">
+                    <span class="search__product_name" v-text="item_name"></span>
+                    <span class="search__product_desc" v-text="item_desc"></span>
+                </div>
+                <div class="search__product-card"><span class="product_label"><strong>Price</strong></span> <span class="product_price" v-text="item_formatted_price"></span></div>
+            </a>
+            `,
+            props: {
+                item_id: {
+                    type: Number,
+                    default: 0,
+                    required: true,
+                },
+                item_name: {
+                    type: String,
+                    default: '',
+                    required: true,
+                },
+                item_link: {
+                    type: String,
+                    default: '',
+                    required: false,
+                },
+                item_image: {
+                    type: String,
+                    default: '<?php echo $this->getViewFileUrl('DreamSites_UltimateSearch::images/product-image-not-found.jpg'); ?>',
+                    required: true,
+                },
+                item_desc: {
+                    type: String,
+                    default: '',
+                    required: false,
+                },
+                item_price: {
+                    type: Number,
+                    default: 0,
+                    required: true,
+                },
+                item_formatted_price: {
+                    type: String,
+                    default: '',
+                    required: true,
+                },
+                item_url: {
+                    type: String,
+                    default: '',
+                    required: true,
+                },
+            },
+        });
+        new Vue ({
+            el: '#searchApp',
+            components: {
+                'search-image-list': searchImageList,
+                'search-image': searchImage
+            }
+        });
+    });
+</script>

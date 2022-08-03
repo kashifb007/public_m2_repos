@@ -1,0 +1,31 @@
+{
+    "name": "dreamsites/ultimatesearcg",
+    "description": "Dream Sites Ultimate Search",
+    "keywords": [
+        "magento2",
+        "ds",
+        "ultimate",
+        "search"
+    ],
+    "type": "magento2-module",
+    "license": "OSL-3.0",
+    "require": {
+        "php": "~5.5.0|~5.6.0|~7.0.0|~7.3|~7.4|8.*"
+    },
+    "authors": [
+        {
+            "name": "Dream Sites",
+            "email": "info@dreamsites.co.uk",
+            "homepage": "https://dreamsites.uk",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "DreamSites\\ReferaFriend\\": "app/code/DreamSites/UltimateSearch"
+        }
+    }
+}

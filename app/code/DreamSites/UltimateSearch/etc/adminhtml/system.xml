@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="dreamsites" translate="label" sortOrder="401" class="ds-extensions">
+            <label>Dream Sites Extensions</label>
+        </tab>
+        <section id="dreamsites_ultimatesearch" translate="label" type="text" sortOrder="300" showInDefault="1"
+                 showInWebsite="1" showInStore="1">
+            <label>Ultimate Search Config</label>
+            <tab>dreamsites</tab>
+            <resource>DreamSites_UltimateSearch::configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General Configuration</label>
+                <field id="search_enabled" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enable Ultimate Search</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

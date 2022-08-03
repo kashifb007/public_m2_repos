@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DreamSites_UltimateSearch::configuration" title="Configuration" module="DreamSites_UltimateSearch" sortOrder="100" action="adminhtml/system_config/edit/section/dreamsites_ultimatesearch" resource="DreamSites_UltimateSearch::configuration"/>
+    </menu>
+</config>

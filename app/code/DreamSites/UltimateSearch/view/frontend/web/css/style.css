@@ -1,0 +1,250 @@
+/* ==========================================================================
+   Ultimate Home Page SCSS
+   ========================================================================== */
+.right_expand {
+    float: left;
+    width: 1.25rem;
+    transition: all .5s linear;
+    position: relative;
+    overflow: hidden;
+    background: gray linear-gradient(to right, #787878, #c3c3c3); }
+
+.left_contract {
+    float: left;
+    width: 1.25rem;
+    clear: both;
+    transition: all .5s linear;
+    position: relative;
+    overflow: hidden;
+    background: gray linear-gradient(to left, #787878, #c3c3c3); }
+
+.top_contract, .bottom_expand {
+    float: left;
+    height: 1.25rem;
+    background: gray;
+    clear: both;
+    margin-left: 1.25rem;
+    transition: all .5s linear;
+    position: relative;
+    overflow: hidden; }
+
+.top_contract > i,
+.bottom_expand > i,
+.left_contract > i,
+.right_expand > i {
+    transition: all .5s linear;
+    position: inherit; }
+
+.top_contract {
+    background-image: linear-gradient(to top, #787878, #c3c3c3); }
+
+.bottom_expand {
+    background-image: linear-gradient(to bottom, #787878, #c3c3c3); }
+
+.block_container {
+    float: left;
+    margin-left: 1.25rem; }
+.block_container:first-of-type {
+    margin-left: 0; }
+
+.right_expand > i {
+    margin-top: 5.625rem;
+    margin-left: 0.3125rem;
+    color: #c9c9c9; }
+
+.left_contract > i {
+    margin-top: 5.625rem;
+    margin-left: 0.3125rem;
+    color: #c9c9c9; }
+
+.top_contract > i {
+    color: #c9c9c9; }
+
+.bottom_expand > i {
+    color: #c9c9c9; }
+
+.close_link > i {
+    float: left;
+    color: red; }
+
+.close_link:hover {
+    color: #a70303; }
+
+.add_block {
+    float: left; }
+
+.row_container {
+    width: 100%;
+    float: left; }
+
+.button {
+    height: 1.25rem;
+    margin: 1.25rem 0; }
+
+.horizontal_row_container {
+    float: left;
+    margin-left: 1.25rem; }
+
+/* ==========================================================================
+   Ultimate Search SCSS
+   ========================================================================== */
+#container {
+    width: 100%;
+    height: 50rem; }
+
+.search__container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px;
+    z-index: 10; }
+
+.search__results {
+    width: 100%;
+    background-color: #fff;
+    box-sizing: border-box;
+    z-index: 20;
+    visibility: visible;
+    overflow: hidden;
+    position: absolute; }
+
+.search__wrapper {
+    max-height: 43.75rem;
+    overflow: hidden auto;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: 0;
+    border-top: 1px solid #eee;
+    border-left: 1px solid #eee; }
+
+.search__results-item:hover {
+    background-color: #f7f7f7; }
+
+.search__wrapper[data-mode=grid] .search__results-item {
+    width: calc(100% / 3); }
+.search__wrapper[data-mode=grid] .search__results-item > a {
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box; }
+.search__wrapper[data-mode=grid] .search__results-item > a .search__copy {
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    -ms-flex-negative: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    -webkit-flex-basis: auto;
+    flex-basis: auto;
+    min-height: 6.25rem;
+    color: #000;
+    text-decoration: none; }
+.search__wrapper[data-mode=grid] .search__results-item > a .search__product-card {
+    margin-top: 0.625rem; }
+.search__wrapper[data-mode=grid] .search__results-item .search__image {
+    max-height: 7em; }
+.search__wrapper[data-mode=grid] .search__results-item .search__product_desc {
+    display: none; }
+
+.search__results-item > a {
+    text-decoration: none;
+    display: flex; }
+
+.product_label, .product_price, .search__product_name, .search__copy {
+    color: #000;
+    text-decoration: none; }
+
+.search__wrapper[data-mode=list] .search__link {
+    padding: 0.625rem;
+    display: flex;
+    border-bottom: 1px solid #eee; }
+.search__wrapper[data-mode=list] .search__link .search__image {
+    padding: 0.3125rem;
+    max-height: 7em;
+    height: auto;
+    position: relative; }
+.search__wrapper[data-mode=list] .search__link .search__product {
+    padding: 5px 5px 0 15px;
+    line-height: 1.4rem;
+    text-align: left;
+    color: #000;
+    margin-top: 0.3125rem; }
+.search__wrapper[data-mode=list] .search__link .search__product-card {
+    color: #000;
+    width: 6.875rem;
+    -ms-flex-negative: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    padding: 0 0.3125rem 0 0.3125rem;
+    text-align: center; }
+.search__wrapper[data-mode=list] .search__link .image__container {
+    min-width: 10rem;
+    display: block;
+    position: relative;
+    text-align: center;
+    min-height: 1px; }
+.search__wrapper[data-mode=list] .search__link .search__product_desc {
+    display: block; }
+.search__wrapper[data-mode=list] .search__link .search__copy, .search__wrapper[data-mode=list] .search__link .search__copy {
+    width: 100%; }
+
+.search__results-item {
+    width: 100%; }
+
+.loading {
+    width: auto;
+    text-align: center;
+    border: 1px solid #eee;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    position: absolute;
+    z-index: 10;
+    background: white;
+    height: 2.8125rem; }
+.loading > img {
+    height: auto;
+    width: 2.5rem; }
+
+.search__legend {
+    border-top: 1px solid #eee;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    padding: 0.4375rem 0.3125rem 0 0.3125rem;
+    display: flex;
+    justify-content: space-between;
+    height: 2.5rem; }
+.search__legend a {
+    color: #bbbbbb; }
+.search__legend a:hover, .search__legend a.active {
+    color: black; }
+
+.search__display-sort {
+    display: flex;
+    justify-content: space-between;
+    width: 4.375rem; }
+
+.search__display-mode {
+    display: flex;
+    justify-content: space-between;
+    width: 3.4375rem; }
+
+@media (min-width: 48rem) {
+    .search__container {
+        float: left;
+        position: inherit; }
+    .search__results, .loading, .search__container, .search__wrapper {
+        width: 50vw; } }
+
+@media (min-width: 87.5rem) {
+    .search__results, .loading, .search__container, .search__wrapper {
+        width: 40vw; } }
+
+/*# sourceMappingURL=style.css.map */

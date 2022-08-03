@@ -1,0 +1,14 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="https://use.fontawesome.com/releases/v5.5.0/css/all.css" src_type="url" />
+        <css src="DreamSites_UltimateSearch::css/style.css"/>
+    </head>
+    <body>
+        <referenceContainer name="header-wrapper">
+            <referenceBlock name="top.search" remove="true"/>
+            <block class="DreamSites\UltimateSearch\Block\Search" name="ultimatesearch_search"
+                   after="logo" template="DreamSites_UltimateSearch::search/list.phtml" />
+        </referenceContainer>
+    </body>
+</page>
