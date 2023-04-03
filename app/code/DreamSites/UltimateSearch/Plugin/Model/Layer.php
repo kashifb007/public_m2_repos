@@ -105,7 +105,6 @@ class Layer
                 exit;
             }
         }
-        $test = true;
         return $collection;
     }
 }

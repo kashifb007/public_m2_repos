@@ -14,7 +14,6 @@ class Display extends \Magento\Framework\App\Action\Action
 
     public function execute()
     {
-        $test = true;
         return $this->_pageFactory->create();
     }
 }

@@ -36,16 +36,9 @@ class Index extends Action
 
     public function beforeExecute(): void
     {
-        $sort = 'relevance';
-        $ajaxSearch = null;
+        $sort = $_POST['sort'] ?: 'relevance';
 
-        if(isset($_POST['sort'])) {
-            $sort = $_POST['sort'];
-        }
-
-        if(isset($_POST['ajax_search'])) {
-            $ajaxSearch = $_POST['ajax_search'];
-        }
+        $ajaxSearch = $_POST['ajax_search'] || null;
 
         if($ajaxSearch) {
             $this->getAjaxSearchSession()->setIsAjaxSearch(true);
