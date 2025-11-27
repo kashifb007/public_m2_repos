@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DreamSites_HomeCarousel::imagelist" title="Home Carousel" module="DreamSites_HomeCarousel" sortOrder="5" action="homecarousel/imagelist" resource="DreamSites_HomeCarousel::imagelist" parent="DreamSites_NewProducts::homeproductmenu"/>
+    </menu>
+</config>

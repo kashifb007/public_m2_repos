@@ -1,0 +1,13 @@
+<h3><?=$block->getBlogIntro() ?></h3>
+<table>
+    <tr>
+        <td>ID</td>
+        <td>Title</td>
+    </tr>
+    <?php foreach($block->getPageItems() as $item): ?>
+    <tr>
+        <td><?php echo $item->getId(); ?></td>
+        <td><a href="<?=$item->getLink() ?>"><?php echo $item->getTitle();?></a></td>
+    </tr>
+    <?php endforeach; ?>
+</table>

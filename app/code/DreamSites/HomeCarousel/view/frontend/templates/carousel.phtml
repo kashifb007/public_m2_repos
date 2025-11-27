@@ -1,0 +1,60 @@
+<?php
+$imageList = $block->getCarouselImages();
+?>
+<section id="splide-carousel" class="hero__slider--section">
+    <div class="splide-carousel splide">
+        <div class="splide__track hero__slider--inner">
+            <div class="splide__list hero__slider--wrapper">
+                <?php foreach($imageList as $item): ?>
+                <!-- Single Slide Item -->
+                <div class="swiper-slide splide__slide">
+                    <div class="hero__slider--items home1__slider--bg relative aspect-[26/9] bg-gray-200 flex <?= $item->getVerticalPosition() ?> <?= $item->getPosition() ?> overflow-hidden">
+                        <div class="absolute inset-0">
+                            <img src="<?=$item->getMediaPath()?>"
+                                 alt="<?=$item->getImageAlt()?>"
+                                 class="w-full h-full object-cover object-center block" />
+                        </div>
+
+                        <div class="container-fluid relative z-10 <?=$item->getVerticalPosition() === 'items-start' ? 'pt-6' : '' ?> <?=$item->getVerticalPosition() === 'items-end' ? 'pb-6' : '' ?> <?=$item->getPosition() === 'justify-start' ? 'pl-20' : '' ?>">
+                            <div class="hero__slider--items__inner">
+                                <div class="row">
+                                    <div class="slider__content text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
+                                        <!-- Main Heading -->
+                                        <h2 class="slider__content--maintitle text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 leading-tight transform transition ease-out duration-700 opacity-0 translate-y-3"
+                                            style="color: <?= $item->getHeadingColour() ?> !important;">
+                                            <?= $item->getHeading() ?>
+                                        </h2>
+
+                                        <!-- Sub Heading -->
+                                        <p class="slider__content--desc text-base md:text-lg mb-8 max-w-lg mx-auto lg:mx-0 transform transition ease-out duration-700 opacity-0 translate-y-3"
+                                            style="color: <?= $item->getTitleColour() ?> !important;">
+                                            <?= $item->getTitle() ?>
+                                        </p>
+
+                                        <!-- CTA Button -->
+                                        <div class="slider__content--btn transform transition ease-out duration-700 opacity-0 translate-y-4">
+                                            <a class="primary__btn px-8 py-3 rounded-md font-semibold transition-all duration-300 inline-flex items-center space-x-2 transform hover:scale-105"
+                                               style="color: <?= $item->getButtonTextColour() ?> !important; background-color: <?= $item->getButtonColour() ?> !important;"
+                                               href="<?= $item->getUrl() ?>">
+                                                <span><?= $item->getButtonText() ?></span>
+                                                <i class="fas fa-arrow-right text-sm"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/x-magento-init">
+    {
+        "#splide-carousel": {
+            "DreamSites_HomeCarousel/js/carousel": {}
+        }
+    }
+</script>

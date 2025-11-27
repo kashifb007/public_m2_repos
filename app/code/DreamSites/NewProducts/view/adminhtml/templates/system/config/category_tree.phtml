@@ -1,0 +1,203 @@
+<?php
+/**
+ * Category tree selector template
+ *
+ * @var \DreamSites\NewProducts\Block\Adminhtml\System\Config\CategoryTree $block
+ */
+$elementId = $block->getElementId();
+$elementName = $block->getElementName();
+$selectedCategories = $block->getSelectedCategories();
+?>
+
+<input type="hidden"
+       id="<?= $block->escapeHtmlAttr($elementId) ?>"
+       name="<?= $block->escapeHtmlAttr($elementName) ?>"
+       value="<?= $block->escapeHtmlAttr(implode(',', $selectedCategories)) ?>"
+       class="input-text admin__control-text" />
+
+<div id="<?= $block->escapeHtmlAttr($elementId) ?>-pills" class="admin__field-control control category-pills-container">
+    <div class="category-pills" data-role="category-pills"></div>
+</div>
+
+<button type="button"
+        class="action-default scalable"
+        id="<?= $block->escapeHtmlAttr($elementId) ?>-button">
+    <span><?= $block->escapeHtml(__('Select Categories')) ?></span>
+</button>
+
+<script>
+require([
+    'jquery',
+    'Magento_Ui/js/modal/modal',
+    'mage/adminhtml/browser'
+], function($, modal) {
+    'use strict';
+
+    var elementId = '<?= $block->escapeJs($elementId) ?>';
+    var selectedCategories = <?= /* @noEscape */ $block->getSelectedCategoriesJson() ?>;
+    var categoryData = {};
+
+    // Initialize pills for already selected categories
+    function initializePills() {
+        if (selectedCategories.length > 0) {
+            $.ajax({
+                url: '<?= $block->escapeUrl($block->getUrl('newproducts/system_config/categorynames')) ?>',
+                data: {category_ids: selectedCategories.join(',')},
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success && response.categories) {
+                        categoryData = response.categories;
+                        renderPills();
+                    }
+                }
+            });
+        }
+    }
+
+    function renderPills() {
+        var pillsContainer = $('[data-role="category-pills"]');
+        pillsContainer.empty();
+
+        selectedCategories.forEach(function(categoryId) {
+            if (categoryData[categoryId]) {
+                var pill = $('<div class="category-pill"></div>')
+                    .attr('data-category-id', categoryId)
+                    .html(
+                        '<span class="category-pill-label">' + categoryData[categoryId] + '</span>' +
+                        '<button type="button" class="category-pill-remove" data-category-id="' + categoryId + '">' +
+                        '<span>×</span>' +
+                        '</button>'
+                    );
+                pillsContainer.append(pill);
+            }
+        });
+
+        updateHiddenField();
+    }
+
+    function updateHiddenField() {
+        $('#' + elementId).val(selectedCategories.join(','));
+    }
+
+    // Remove category pill
+    $(document).on('click', '.category-pill-remove', function() {
+        var categoryId = $(this).data('category-id').toString();
+        var index = selectedCategories.indexOf(categoryId);
+        if (index > -1) {
+            selectedCategories.splice(index, 1);
+            delete categoryData[categoryId];
+            renderPills();
+        }
+    });
+
+    // Open category chooser modal
+    $('#' + elementId + '-button').on('click', function() {
+        var chooserUrl = '<?= $block->escapeUrl($block->getCategoryChooserUrl()) ?>?selected=' + selectedCategories.join(',');
+
+        var modalContent = $('<div id="category-chooser-modal"></div>');
+
+        var modalOptions = {
+            type: 'slide',
+            title: '<?= $block->escapeJs(__('Select Categories')) ?>',
+            modalClass: 'category-chooser-modal',
+            buttons: [{
+                text: '<?= $block->escapeJs(__('Cancel')) ?>',
+                class: 'action-secondary action-dismiss',
+                click: function() {
+                    this.closeModal();
+                }
+            }, {
+                text: '<?= $block->escapeJs(__('Confirm')) ?>',
+                class: 'action-primary action-accept',
+                click: function() {
+                    // Get selected categories from the tree
+                    var $modal = $(this.modal);
+                    var checkedInputs = $modal.find('input[type="checkbox"]:checked');
+
+                    selectedCategories = [];
+                    categoryData = {};
+
+                    checkedInputs.each(function() {
+                        var categoryId = $(this).val();
+                        var categoryName = $(this).data('category-name');
+                        selectedCategories.push(categoryId);
+                        categoryData[categoryId] = categoryName;
+                    });
+
+                    renderPills();
+                    this.closeModal();
+                }
+            }]
+        };
+
+        var slideModal = modal(modalOptions, modalContent);
+
+        $.ajax({
+            url: chooserUrl,
+            type: 'GET',
+            showLoader: true,
+            success: function(response) {
+                modalContent.html(response);
+                modalContent.modal('openModal');
+            }
+        });
+    });
+
+    initializePills();
+});
+</script>
+
+<style>
+.category-pills-container {
+    margin-bottom: 10px;
+}
+
+.category-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    min-height: 20px;
+}
+
+.category-pill {
+    display: inline-flex;
+    align-items: center;
+    background-color: #e0e0e0;
+    border-radius: 16px;
+    padding: 4px 4px 4px 12px;
+    font-size: 13px;
+    color: #333;
+}
+
+.category-pill-label {
+    margin-right: 8px;
+}
+
+.category-pill-remove {
+    background: none;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    color: #666;
+    transition: background-color 0.2s;
+}
+
+.category-pill-remove:hover {
+    background-color: #ccc;
+    color: #000;
+}
+
+.category-chooser-modal {
+    max-height: 600px;
+    overflow-y: auto;
+}
+</style>

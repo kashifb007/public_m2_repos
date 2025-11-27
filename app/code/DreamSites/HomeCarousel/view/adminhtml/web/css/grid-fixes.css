@@ -1,0 +1,8 @@
+/**
+ * Blog Grid CSS Fixes
+ * Fix for dropdown clipping in Actions column
+ */
+
+body.carousel-imagelist-index .admin__data-grid-wrap {
+    overflow: visible !important;
+}

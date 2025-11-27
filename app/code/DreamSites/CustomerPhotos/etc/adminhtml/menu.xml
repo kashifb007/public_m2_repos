@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DreamSites_CustomerPhotos::photo" title="Customer Photos" module="DreamSites_CustomerPhotos" sortOrder="0" resource="DreamSites_CustomerPhotos::photo" parent="DreamSites_NewProducts::homeproductmenu" action="customerphotos/photo/index"/>
+    </menu>
+</config>

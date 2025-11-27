@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="DreamSites_HomeCarousel::css/splide.min.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="DreamSites\CustomerPhotos\Block\CustomerPhotos" after="asian.homepage.carousel" name="asian.homepage.customerphotos" template="DreamSites_CustomerPhotos::customer-photos.phtml" />
+        </referenceContainer>
+    </body>
+</page>

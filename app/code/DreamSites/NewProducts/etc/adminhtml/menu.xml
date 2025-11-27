@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DreamSites_NewProducts::homeproductmenu" title="Dream Sites" module="DreamSites_NewProducts" sortOrder="5" resource="DreamSites_NewProducts::homeproductmenu" parent="Magento_Backend::content"/>
+        <add id="DreamSites_NewProducts::configuration" title="Home New Products" module="DreamSites_NewProducts" sortOrder="20" action="admin/system_config/edit/section/dreamsites_newproducts" resource="DreamSites_NewProducts::configuration" parent="DreamSites_NewProducts::homeproductmenu"/>
+    </menu>
+</config>

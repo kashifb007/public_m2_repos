@@ -1,0 +1,21 @@
+.filepond--item > .filepond--file-wrapper,
+.filepond--image-preview-wrapper,
+.filepond--item {
+    max-width: 200px;
+}
+
+.filepond--file-wrapper {
+    margin: 10px;
+}
+
+.filepond--root {
+    margin-bottom: 0;
+}
+
+#img-placeholder[style*="display: none"] {
+    display: none !important;
+}
+
+#filepond-selected-product[x-show][style*="display: none"] {
+    display: none !important;
+}

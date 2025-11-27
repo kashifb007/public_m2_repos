@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Layout for single blog page
+ * Route: blog/id/permalink
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="DreamSites_Blog::css/comments.css"/>
+        <css src="DreamSites_Blog::css/style.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="DreamSites\Blog\Block\Single"
+                   name="blog.single"
+                   template="DreamSites_Blog::single.phtml">
+                <block class="DreamSites\Blog\Block\CommentList"
+                       name="blog.comments"
+                       template="DreamSites_Blog::comment-form.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

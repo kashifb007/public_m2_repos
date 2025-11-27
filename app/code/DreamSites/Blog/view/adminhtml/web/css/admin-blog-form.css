@@ -1,0 +1,12 @@
+/**
+ * Blog Admin Form Styles
+ */
+
+/* Image upload section styling */
+.filepond--wrapper {
+    width: 30rem;
+}
+
+.filepond--wrapper:hover, div#image_upload_section:hover, .filepond--drop-label:hover,  .filepond--drop-label > label:hover {
+    cursor: pointer;
+}

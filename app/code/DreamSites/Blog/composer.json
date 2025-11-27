@@ -1,0 +1,16 @@
+{
+  "name": "dreamsites/blog",
+  "description": "Dream Sites Blog Module",
+  "keywords": ["magento2", "blog"],
+  "type": "magento2-module",
+  "license": "OSL-3.0",
+  "require": {
+    "php": "~8.2"
+  },
+  "autoload": {
+    "files": [ "registration.php" ],
+    "psr-4": {
+      "DreamSites\\Blog\\": ""
+    }
+  }
+}

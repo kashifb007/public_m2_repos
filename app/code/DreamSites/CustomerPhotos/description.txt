@@ -1,0 +1,7 @@
+
+Will need the following fields.
+
+Image upload. image_filename
+Ajax product search input. product_id
+Name input.
+NULLable instagram handle input.

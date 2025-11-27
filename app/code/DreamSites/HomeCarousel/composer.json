@@ -1,0 +1,16 @@
+{
+  "name": "dreamsites/homecarousel",
+  "description": "Dream Sites Home Carousel Module",
+  "keywords": ["magento2", "homecarousel"],
+  "type": "magento2-module",
+  "license": "OSL-3.0",
+  "require": {
+    "php": "~8.2"
+  },
+  "autoload": {
+    "files": [ "registration.php" ],
+    "psr-4": {
+      "DreamSites\\HomeCarousel\\": ""
+    }
+  }
+}

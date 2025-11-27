@@ -1,0 +1,98 @@
+<div id="blog-image-upload-app" class="admin__field admin__field-option">
+    <div class="admin__field-control">
+        <file-pond-uploader
+            :page_id="pageId"
+            :post_url="postUrl"
+            v-on:file-pond-added="handleFilePondAdded"
+            v-on:file-pond-cleared="handleFilePondCleared"
+            v-on:file-pond-completed="handleFilepondCompleted"
+            v-on:file-pond-warning="handleFilepondWarning">
+        </file-pond-uploader>
+    </div>
+</div>
+
+<script type="text/javascript">
+require([
+    'jquery',
+    'vue',
+    'DreamSites_Blog/js/FilePondUploaderWrapper',
+    'domReady!'
+], function($, Vue, FilePondUploaderComponent) {
+
+    const { createApp } = Vue;
+
+    const app = createApp({
+        data() {
+            return {
+                postUrl: <?= json_encode($block->getUploadImageUrl()) ?>
+            }
+        },
+        components: {
+            'file-pond-uploader': FilePondUploaderComponent
+        },
+        methods: {
+            handleFilePondAdded(files) {
+                console.log('Files added to FilePond:', files);
+            },
+            handleFilePondCleared() {
+                console.log('FilePond cleared');
+            },
+            handleFilepondCompleted() {
+                console.log('FilePond upload completed');
+            },
+            handleFilepondWarning(warning) {
+                console.log('FilePond warning:', warning);
+            }
+        },
+    });
+
+    app.mount('#blog-image-upload-app');
+});
+</script>
+
+<link rel="stylesheet" href="<?= $block->getViewFileUrl('DreamSites_Blog::css/filepond.min.css') ?>">
+<link rel="stylesheet" href="<?= $block->getViewFileUrl('DreamSites_Blog::css/filepond-plugin-image-preview.min.css') ?>">
+
+<style>
+.filepond-wrapper {
+    margin: 10px 0;
+}
+
+.uploaded-files {
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.uploaded-file-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.preview-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+.action-remove {
+    margin-left: auto;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.action-remove:hover {
+    background: #c0392b;
+}
+</style>

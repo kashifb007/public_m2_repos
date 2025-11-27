@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DreamSites_Blog::pagelist" title="Blog" module="DreamSites_Blog" sortOrder="10" parent="DreamSites_NewProducts::homeproductmenu" action="blog/pagelist" resource="DreamSites_Blog::pagelist"/>
+        <add id="DreamSites_Blog::commentlist" title="Blog Comments" module="DreamSites_Blog" sortOrder="10" parent="DreamSites_NewProducts::homeproductmenu" action="blog/commentlist" resource="DreamSites_Blog::commentlist"/>
+    </menu>
+</config>

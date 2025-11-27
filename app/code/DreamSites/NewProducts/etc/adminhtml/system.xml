@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="dreamsites" translate="label" sortOrder="401" class="ds-extensions">
+            <label>Dream Sites Extensions</label>
+        </tab>
+        <section id="dreamsites_newproducts" translate="label" type="text" sortOrder="2000" showInDefault="1"
+                 showInWebsite="1" showInStore="1">
+            <label>New Products Configuration</label>
+            <tab>dreamsites</tab>
+            <resource>DreamSites_NewProducts::configuration</resource>
+            <group id="newproducts" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>New Products Configuration</label>
+                <field id="product_enabled" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enable New Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="categories" translate="label comment" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>New Categories</label>
+                    <frontend_model>DreamSites\NewProducts\Block\Adminhtml\System\Config\CategoryTree</frontend_model>
+                    <validate>required-entry</validate>
+                    <comment>Select one or more categories using the tree selector. Values are saved as comma-separated IDs.</comment>
+                    <depends>
+                        <field id="product_enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

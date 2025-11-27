@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="dreamsites" translate="label" sortOrder="401" class="ds-extensions">
+            <label>Dream Sites</label>
+        </tab>
+        <section id="dreamsites_blog" translate="label" type="text" sortOrder="2000" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Blog Configuration</label>
+            <tab>dreamsites</tab>
+            <resource>DreamSites_Blog::config_blog</resource>
+            <group id="page" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Blog</label>
+                <field id="header" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Blog Intro Text</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

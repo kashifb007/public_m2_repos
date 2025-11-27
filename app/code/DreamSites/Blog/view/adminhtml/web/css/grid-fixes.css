@@ -1,0 +1,12 @@
+/**
+ * Blog Grid CSS Fixes
+ * Fix for dropdown clipping in Actions column
+ */
+
+body.blog-pagelist-index .admin__data-grid-wrap {
+    overflow: visible !important;
+}
+
+body.blog-commentlist-index .admin__data-grid-wrap {
+    overflow: visible !important;
+}

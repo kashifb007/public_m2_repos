@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="DreamSites\Blog\Model\PageInterface" type="DreamSites\Blog\Model\Page" />
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="blog_pagelist_listing_data_source" xsi:type="string">DreamSites\Blog\Model\ResourceModel\Page\Grid\Collection</item>
+                <item name="blog_commentlist_listing_data_source" xsi:type="string">DreamSites\Blog\Model\ResourceModel\Comment\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="DreamSites\Blog\Model\ResourceModel\Page\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">dreamsites_blog</argument>
+            <argument name="eventPrefix" xsi:type="string">blog_pagelist_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">blog_pagelist_collection</argument>
+            <argument name="resourceModel" xsi:type="string">DreamSites\Blog\Model\ResourceModel\Page</argument>
+        </arguments>
+    </type>
+    <type name="DreamSites\Blog\Model\ResourceModel\Comment\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">dreamsites_blog_comment</argument>
+            <argument name="eventPrefix" xsi:type="string">blog_commentlist_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">blog_commentlist_collection</argument>
+            <argument name="resourceModel" xsi:type="string">DreamSites\Blog\Model\ResourceModel\Comment</argument>
+        </arguments>
+    </type>
+    <virtualType name="PageGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PageGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">DreamSites\Blog\Model\ResourceModel\Page\Grid\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">PageGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="CommentGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="CommentGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">DreamSites\Blog\Model\ResourceModel\Comment\Grid\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">CommentGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+</config>

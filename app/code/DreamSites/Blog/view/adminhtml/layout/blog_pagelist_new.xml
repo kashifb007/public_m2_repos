@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <!-- Custom CSS for blog forms -->
+        <css src="DreamSites_Blog::css/admin-blog-form.css"/>
+    </head>
+    <body>
+        <attribute name="class" value="admin-blog-pagelist-new"/>
+    </body>
+</page>

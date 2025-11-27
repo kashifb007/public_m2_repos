@@ -1,0 +1,21 @@
+<?php
+/**
+ * Single blog page template
+ *
+ * @var $block \DreamSites\Blog\Block\Single
+ */
+?>
+<div class="blog-single-page">
+    <img src="<?= $block->getBlogPage()->getMediaUrl() ?>" alt="<?= $block->escapeHtmlAttr($block->getBlogPage()->getImageAlt()) ?>" class="blog-page-image"/>
+    <!-- Additional content will be added here later -->
+    <div class="blog-content">
+        <?= $block->getBlogPage()->getContent() ?>
+    </div>
+
+    <!-- Comments section -->
+    <?php if ($block->getBlogPage()->getHasComments()): ?>
+        <div class="blog-comments-section">
+            <?= $block->getChildHtml('blog.comments') ?>
+        </div>
+    <?php endif; ?>
+</div>

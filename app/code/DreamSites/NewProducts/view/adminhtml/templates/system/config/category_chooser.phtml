@@ -1,0 +1,194 @@
+<?php
+/**
+ * Category tree chooser template
+ *
+ * @var \DreamSites\NewProducts\Block\Adminhtml\System\Config\CategoryChooser $block
+ */
+$categoryTree = $block->getCategoryTree();
+?>
+
+<div class="category-tree-chooser">
+    <div class="category-search-container">
+        <input type="text"
+               id="category-search"
+               class="admin__control-text"
+               placeholder="<?= $block->escapeHtmlAttr(__('Search categories...')) ?>" />
+    </div>
+
+    <div class="category-tree-container">
+        <?php if (!empty($categoryTree)): ?>
+            <?= /* @noEscape */ $block->renderCategoryTree($categoryTree) ?>
+        <?php else: ?>
+            <p><?= $block->escapeHtml(__('No active categories found.')) ?></p>
+        <?php endif; ?>
+    </div>
+</div>
+
+<script>
+require(['jquery'], function($) {
+    'use strict';
+
+    setTimeout(function() {
+        $(document).off('click.categorytoggle').on('click.categorytoggle', '.category-toggle', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var $toggle = $(this);
+            var $item = $toggle.closest('.category-tree-item');
+            $item.toggleClass('expanded');
+            $toggle.text($item.hasClass('expanded') ? '▼' : '▶');
+            return false;
+        });
+
+        $(document).off('click.categoryname').on('click.categoryname', '.category-tree-item.has-children > .category-name', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var $item = $(this).closest('.category-tree-item');
+            var $toggle = $item.find('> .category-toggle');
+            $item.toggleClass('expanded');
+            $toggle.text($item.hasClass('expanded') ? '▼' : '▶');
+            return false;
+        });
+    }, 100);
+
+    // Search functionality
+    $('#category-search').on('keyup', function() {
+        var searchTerm = $(this).val().toLowerCase();
+
+        if (searchTerm === '') {
+            $('.category-tree-item').show();
+            $('.category-tree-item').removeClass('expanded');
+            $('.category-toggle').text('▶');
+        } else {
+            $('.category-tree-item').hide();
+
+            $('.category-name').each(function() {
+                var categoryName = $(this).text().toLowerCase();
+                if (categoryName.indexOf(searchTerm) !== -1) {
+                    var $item = $(this).closest('.category-tree-item');
+                    $item.show();
+
+                    // Show all parents
+                    $item.parents('.category-tree-item').each(function() {
+                        $(this).show();
+                        $(this).addClass('expanded');
+                        $(this).find('> .category-toggle').text('▼');
+                    });
+                }
+            });
+        }
+    });
+
+    $(document).on('change', '.category-checkbox', function() {
+        var $checkbox = $(this);
+        var isChecked = $checkbox.is(':checked');
+        var $item = $checkbox.closest('.category-tree-item');
+
+        // Check/uncheck all children
+        $item.find('.category-checkbox').prop('checked', isChecked);
+    });
+});
+</script>
+
+<style>
+.category-tree-chooser {
+    padding: 15px;
+}
+
+.category-search-container {
+    margin-bottom: 15px;
+}
+
+#category-search {
+    width: 100%;
+    padding: 8px;
+}
+
+.category-tree-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background: #fff;
+}
+
+.category-tree-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.category-tree-list ul {
+    list-style: none;
+    padding-left: 25px;
+    margin: 0;
+    display: none;
+}
+
+.category-tree-item.expanded > ul {
+    display: block;
+}
+
+.category-tree-item {
+    padding: 5px 0;
+}
+
+.category-toggle {
+    display: inline-block;
+    width: 24px;
+    min-height: 24px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    line-height: 24px;
+    padding: 2px;
+    margin-right: 4px;
+    transition: background-color 0.2s;
+    border-radius: 3px;
+}
+
+.category-toggle:hover {
+    background-color: #e3e3e3;
+    color: #1979c3;
+}
+
+.category-toggle:active {
+    background-color: #d0d0d0;
+}
+
+.category-toggle-spacer {
+    display: inline-block;
+    width: 24px;
+    margin-right: 4px;
+}
+
+.category-label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0;
+}
+
+.category-checkbox {
+    margin-right: 8px;
+}
+
+.category-name {
+    user-select: none;
+}
+
+.category-tree-item.has-children > .category-label .category-name {
+    cursor: pointer;
+}
+
+.category-tree-item.has-children > .category-label .category-name:hover {
+    color: #1979c3;
+    text-decoration: underline;
+}
+
+.category-tree-item:hover > .category-label .category-name {
+    color: #1979c3;
+}
+</style>

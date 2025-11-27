@@ -1,0 +1,464 @@
+<?php
+/**
+ * New Products Template
+ * @var $block \DreamSites\NewProducts\Block\Home
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$categoryProducts = $block->getCategoryProducts();
+$categories = $block->getCategories();
+$firstKey = $block->getFirstCategoryKey();
+?>
+
+<?php if (count($categoryProducts)): ?>
+<section class="product__section section--padding pt-0"
+         x-data="{
+             activeTab: '<?= $escaper->escapeJs($firstKey) ?>',
+             showProductModal: false,
+             selectedProduct: null,
+             selectedOptions: {},
+             quantity: 1,
+             errorMessage: '',
+             currentImage: '',
+             imageLoading: false,
+
+             openProductModal(product) {
+                 this.selectedProduct = product;
+                 this.selectedOptions = {};
+                 this.quantity = 1;
+                 this.errorMessage = '';
+                 this.currentImage = product.image;
+                 this.imageLoading = false;
+                 this.showProductModal = true;
+                 document.body.style.overflow = 'hidden';
+             },
+
+             closeProductModal() {
+                 this.showProductModal = false;
+                 this.selectedProduct = null;
+                 this.selectedOptions = {};
+                 this.errorMessage = '';
+                 this.currentImage = '';
+                 this.imageLoading = false;
+                 document.body.style.overflow = '';
+             },
+
+             switchTab(tab) {
+                 this.activeTab = tab;
+             },
+
+             changeColorImage(colorOption) {
+                 if (colorOption.image) {
+                     this.imageLoading = true;
+
+                     // Preload image
+                     const img = new Image();
+                     img.onload = () => {
+                         this.currentImage = colorOption.image;
+                         this.imageLoading = false;
+                     };
+                     img.onerror = () => {
+                         this.imageLoading = false;
+                     };
+                     img.src = colorOption.image;
+                 }
+             },
+
+             validateOptions() {
+                 this.errorMessage = '';
+
+                 if (!this.selectedProduct || this.selectedProduct.typeId !== 'configurable') {
+                     return true;
+                 }
+
+                 const options = this.selectedProduct.options || {};
+
+                 if (options.colors && options.colors.length > 0 && !this.selectedOptions.color) {
+                     this.errorMessage = '<?= $escaper->escapeJs(__('Please select a color')) ?>';
+                     return false;
+                 }
+
+                 if (options.sizes && options.sizes.length > 0 && !this.selectedOptions.size) {
+                     this.errorMessage = '<?= $escaper->escapeJs(__('Please select a size')) ?>';
+                     return false;
+                 }
+
+                 if (options.otherOptions) {
+                     for (const [key, option] of Object.entries(options.otherOptions)) {
+                         if (!this.selectedOptions[key]) {
+                             this.errorMessage = '<?= $escaper->escapeJs(__('Please select')) ?> ' + option.label;
+                             return false;
+                         }
+                     }
+                 }
+
+                 return true;
+             }
+         }"
+         @keydown.escape.window="closeProductModal()">
+
+    <div class="container-fluid max-w-7xl mx-auto pt-6 px-4">
+        <!-- Section Heading -->
+        <div class="section__heading text-center mb-8">
+            <h2 class="section__heading--maintitle text-xl md:text-2xl font-bold text-gray-900">
+                <?= $escaper->escapeHtml(__('New Products')) ?>
+            </h2>
+        </div>
+
+        <!-- Category Tabs -->
+        <ul role="tablist" class="product__tab--one product__tab--primary__btn flex justify-center mb-12 space-x-4">
+            <?php foreach ($categories as $key => $categoryItem): ?>
+            <li>
+                <button @click.prevent.stop="switchTab('<?= $escaper->escapeHtmlAttr($key) ?>')"
+                        type="button"
+                        role="tab"
+                        :aria-selected="activeTab === '<?= $escaper->escapeHtmlAttr($key) ?>'"
+                        :class="{ 'bg-pink-500 text-white': activeTab === '<?= $escaper->escapeHtmlAttr($key) ?>', 'bg-gray-200 text-gray-700 hover:bg-gray-300': activeTab !== '<?= $escaper->escapeHtmlAttr($key) ?>' }"
+                        class="product__tab--primary__btn__list px-6 py-3 rounded-md font-semibold transition-all duration-300">
+                    <?= $escaper->escapeHtml($categoryItem) ?>
+                </button>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+
+        <div class="tab_content relative">
+            <?php foreach ($categoryProducts as $tabKey => $productCollection): ?>
+            <div x-show="activeTab === '<?= $escaper->escapeHtmlAttr($tabKey) ?>'"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="tab_pane absolute top-0 left-0 w-full"
+                 :class="{ 'relative': activeTab === '<?= $escaper->escapeHtmlAttr($tabKey) ?>' }">
+
+                <div class="product__section--inner">
+                    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6">
+                        <?php foreach ($productCollection as $product): ?>
+                        <?php
+                            $productData = $block->getProductData($product);
+                            $reviewData = ['rating_summary' => $productData['rating_summary'], 'reviews_count' => $productData['reviews_count']];
+                        ?>
+                        <div class="product__items bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
+                            <!-- Product Image -->
+                            <div class="product__items--thumbnail relative overflow-hidden">
+                                <a class="product__items--link block" href="<?= $escaper->escapeUrl($productData['url']) ?>">
+                                    <img class="product__items--img w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                                         src="<?= $escaper->escapeUrl($productData['image']) ?>"
+                                         alt="<?= $escaper->escapeHtmlAttr($productData['name']) ?>">
+                                </a>
+
+                                <!-- Product Actions Overlay -->
+                                <div class="product__items--action absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">
+                                    <button @click='openProductModal(<?= /* @noEscape */ json_encode($productData, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'
+                                            class="product__items--action__btn bg-white text-gray-700 w-10 h-10 rounded-full flex items-center justify-center hover:bg-pink-500 hover:text-white transition-colors duration-200"
+                                            title="<?= $escaper->escapeHtmlAttr(__('Quick View')) ?>">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </button>
+
+                                    <a href="<?= $escaper->escapeUrl($block->getUrl('wishlist/index/add', ['product' => $product->getId()])) ?>"
+                                       class="product__items--action__btn bg-white text-gray-700 w-10 h-10 rounded-full flex items-center justify-center hover:bg-pink-500 hover:text-white transition-colors duration-200"
+                                       title="<?= $escaper->escapeHtmlAttr(__('Add to Wishlist')) ?>"
+                                       data-action="add-to-wishlist">
+                                        <i class="fas fa-heart text-sm"></i>
+                                    </a>
+
+                                    <?php if ($product->isSaleable()): ?>
+                                        <?php if ($product->getTypeId() == 'simple'): ?>
+                                            <!-- Simple Product: Add directly to cart -->
+                                            <form action="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/add')) ?>"
+                                                  method="post"
+                                                  data-product-sku="<?= $escaper->escapeHtmlAttr($product->getSku()) ?>"
+                                                  class="inline-block">
+                                                <input type="hidden" name="product" value="<?= (int)$product->getId() ?>">
+                                                <input type="hidden" name="qty" value="1">
+                                                <?= $block->getBlockHtml('formkey') ?>
+                                                <button type="submit"
+                                                        class="product__items--action__btn bg-white text-gray-700 w-10 h-10 rounded-full flex items-center justify-center hover:bg-pink-500 hover:text-white transition-colors duration-200"
+                                                        title="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                                    <i class="fas fa-shopping-cart text-sm"></i>
+                                                </button>
+                                            </form>
+                                        <?php else: ?>
+                                            <!-- Configurable Product: Go to product page -->
+                                            <a href="<?= $escaper->escapeUrl($productData['url']) ?>"
+                                               class="product__items--action__btn bg-white text-gray-700 w-10 h-10 rounded-full flex items-center justify-center hover:bg-pink-500 hover:text-white transition-colors duration-200"
+                                               title="<?= $escaper->escapeHtmlAttr(__('View Options')) ?>">
+                                                <i class="fas fa-shopping-cart text-sm"></i>
+                                            </a>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <!-- Product Info -->
+                            <div class="product__items--content p-4">
+                                <h3 class="product__items--content__title mb-2">
+                                    <a href="<?= $escaper->escapeUrl($productData['url']) ?>"
+                                       class="text-gray-900 hover:text-pink-500 transition-colors duration-200 font-medium line-clamp-2">
+                                        <?= $escaper->escapeHtml($productData['name']) ?>
+                                    </a>
+                                </h3>
+
+                                <div class="product__items--price-review flex justify-between items-center">
+                                    <span class="current__price text-lg font-semibold text-pink-500">
+                                        <?= $escaper->escapeHtml($productData['price']) ?>
+                                    </span>
+
+                                    <?php if ($reviewData['reviews_count'] > 0): ?>
+                                        <div class="product-reviews-summary short">
+                                            <div class="rating-summary">
+                                                <span class="label" style="display:none;"><span><?= $escaper->escapeHtml(__('Rating')) ?>:</span></span>
+                                                <div class="rating-result" title="<?= $escaper->escapeHtmlAttr($reviewData['rating_summary']) ?>%">
+                                                    <span style="width: <?= $escaper->escapeHtmlAttr($reviewData['rating_summary']) ?>%;">
+                                                        <span><?= $escaper->escapeHtml($reviewData['rating_summary']) ?>%</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <!-- Product Quick View Modal -->
+    <div id="product-modal-backdrop"
+         x-show="showProductModal"
+         :class="{ 'active': showProductModal }"
+         x-cloak
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+         @click="closeProductModal()">
+
+        <div id="product-modal-content"
+             x-show="showProductModal"
+             :class="{ 'active': showProductModal }"
+             x-cloak
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 transform scale-95"
+             x-transition:enter-end="opacity-100 transform scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 transform scale-100"
+             x-transition:leave-end="opacity-0 transform scale-95"
+             @click.stop
+             class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 class="text-xl font-semibold text-gray-900" x-text="selectedProduct?.name">
+                    <?= $escaper->escapeHtml(__('Product Details')) ?>
+                </h3>
+                <button @click="closeProductModal()"
+                        title="Close"
+                        class="text-gray-400 hover:text-gray-600 transition-colors w-6 border-none">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Product Image -->
+                    <div class="product-image relative">
+                        <img :src="currentImage"
+                             :alt="selectedProduct?.name"
+                             class="w-full h-96 object-cover rounded-lg transition-opacity duration-300"
+                             :class="{ 'opacity-50': imageLoading }">
+
+                        <!-- Loading Spinner -->
+                        <div x-show="imageLoading"
+                             x-cloak
+                             class="absolute inset-0 flex items-center justify-center">
+                            <div x-show="imageLoading"
+                                 x-cloak
+                                class="loader-spinner">
+                                <svg class="animate-spin h-12 w-12 text-pink-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="product-details space-y-6">
+                        <div class="flex justify-between items-center">
+                            <!-- Price -->
+                            <span class="text-3xl font-semibold text-pink-500 mb-2" x-text="selectedProduct?.price"></span>
+
+                            <!-- Review Stars -->
+                            <div x-show="selectedProduct?.reviews_count > 0" class="product-reviews-summary short">
+                                <div class="rating-summary">
+                                    <span class="label" style="display:none;"><span><?= $escaper->escapeHtml(__('Rating')) ?>:</span></span>
+                                    <div class="rating-result"
+                                         :title="selectedProduct?.rating_summary + '%'">
+                                        <span :style="'width: ' + selectedProduct?.rating_summary + '%;'">
+                                            <span x-text="selectedProduct?.rating_summary + '%'"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div x-show="selectedProduct?.description">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2"><?= $escaper->escapeHtml(__('Description')) ?></h4>
+                            <p class="text-gray-600" x-text="selectedProduct?.description"></p>
+                        </div>
+
+                        <!-- Color Selection (Dynamic with Swatches) -->
+                        <div x-show="selectedProduct?.options?.colors && selectedProduct.options.colors.length > 0">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">
+                                <?= $escaper->escapeHtml(__('Color')) ?> <span class="text-red-500">*</span>
+                                <span x-show="selectedOptions.color" class="text-sm font-normal text-gray-600">
+                                    - <span x-text="selectedProduct?.options?.colors.find(c => c.id === selectedOptions.color)?.label"></span>
+                                </span>
+                            </h4>
+                            <div class="flex flex-wrap gap-3">
+                                <template x-for="color in selectedProduct?.options?.colors" :key="color.id">
+                                    <button @click="selectedOptions.color = color.id; changeColorImage(color);"
+                                            :title="color.label"
+                                            :class="{ 'ring-2 ring-pink-500 ring-offset-2': selectedOptions.color === color.id }"
+                                            class="relative group transition-all duration-200 w-10 h-10 rounded-full">
+                                        <!-- Visual Swatch (Color Circle) -->
+                                        <template x-if="color.swatch_type == '1' && color.swatch_color">
+                                            <span class="block w-10 h-10 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-colors"
+                                                  :style="'background-color: ' + color.swatch_color"></span>
+                                        </template>
+                                        <!-- Visual Swatch (Image) -->
+                                        <template x-if="color.swatch_type == '2' && color.swatch_thumb">
+                                            <img :src="color.swatch_thumb"
+                                                 :alt="color.label"
+                                                 class="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-gray-400 object-cover transition-colors">
+                                        </template>
+                                        <!-- Text Swatch or fallback -->
+                                        <template x-if="!color.swatch_type || color.swatch_type == '0'">
+                                            <span class="block px-4 py-2 border-2 border-gray-300 rounded-md hover:border-pink-400 transition-colors text-sm"
+                                                  x-text="color.swatch_text || color.label"></span>
+                                        </template>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Size Selection -->
+                        <div x-show="selectedProduct?.options?.sizes && selectedProduct.options.sizes.length > 0">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3"><?= $escaper->escapeHtml(__('Size')) ?> <span class="text-red-500">*</span></h4>
+                            <div class="flex flex-wrap gap-3">
+                                <template x-for="size in selectedProduct?.options?.sizes" :key="size.id">
+                                    <button @click="selectedOptions.size = size.id"
+                                            :class="{ 'bg-pink-500 text-white': selectedOptions.size === size.id, 'bg-gray-100 text-gray-700': selectedOptions.size !== size.id }"
+                                            class="px-4 py-2 border border-gray-300 rounded-md hover:border-pink-500 transition-colors"
+                                            x-text="size.label"></button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Other Options -->
+                        <template x-if="selectedProduct?.options?.otherOptions">
+                            <template x-for="(option, key) in selectedProduct.options.otherOptions" :key="key">
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-900 mb-3" x-text="option.label + ' *'"></h4>
+                                    <div class="flex flex-wrap gap-3">
+                                        <template x-for="opt in option.options" :key="opt.id">
+                                            <button @click="selectedOptions[key] = opt.id"
+                                                    :class="{ 'bg-pink-500 text-white': selectedOptions[key] === opt.id, 'bg-gray-100 text-gray-700': selectedOptions[key] !== opt.id }"
+                                                    class="px-4 py-2 border border-gray-300 rounded-md hover:border-pink-500 transition-colors"
+                                                    x-text="opt.label"></button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+
+                        <div x-show="errorMessage" x-transition class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md">
+                            <p x-text="errorMessage"></p>
+                        </div>
+
+                        <!-- Add to Cart Form for Modal -->
+                        <form :action="'<?= $escaper->escapeJs($block->getUrl('checkout/cart/add')) ?>'"
+                              method="post"
+                              id="modal-product-addtocart-form"
+                              @submit.prevent="if(validateOptions()) { $el.submit(); }">
+
+                            <input type="hidden" name="product" :value="selectedProduct?.id">
+                            <?= $block->getBlockHtml('formkey') ?>
+
+                            <!-- Super Attributes for Configurable Products -->
+                            <template x-if="selectedProduct?.options?.attributeIds">
+                                <div>
+                                    <!-- Color Attribute -->
+                                    <input x-show="selectedOptions.color"
+                                           type="hidden"
+                                           :name="'super_attribute[' + selectedProduct.options.attributeIds.color + ']'"
+                                           :value="selectedOptions.color">
+
+                                    <!-- Size Attribute -->
+                                    <input x-show="selectedOptions.size"
+                                           type="hidden"
+                                           :name="'super_attribute[' + selectedProduct.options.attributeIds.size + ']'"
+                                           :value="selectedOptions.size">
+
+                                    <!-- Other Attributes -->
+                                    <template x-for="(value, key) in selectedOptions" :key="key">
+                                        <input x-show="key !== 'color' && key !== 'size' && selectedProduct.options.attributeIds[key]"
+                                               type="hidden"
+                                               :name="'super_attribute[' + selectedProduct.options.attributeIds[key] + ']'"
+                                               :value="value">
+                                    </template>
+                                </div>
+                            </template>
+
+                            <!-- Quantity and Action Buttons -->
+                            <div class="flex items-center space-x-4">
+                                <!-- Quantity Input -->
+                                <div class="flex items-center">
+                                    <label for="modal-quantity" class="text-sm font-semibold text-gray-700 mr-2"><?= $escaper->escapeHtml(__('Qty:')) ?></label>
+                                    <input type="number"
+                                           name="qty"
+                                           id="modal-quantity"
+                                           x-model.number="quantity"
+                                           min="1"
+                                           class="w-20 px-3 py-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-pink-500">
+                                </div>
+
+                                <!-- Add to Cart Button -->
+                                <button type="submit"
+                                        class="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-3 px-6 rounded-md font-semibold transition-colors">
+                                    <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+                                </button>
+
+                                <!-- Wishlist Button -->
+                                <a :href="'<?= $escaper->escapeJs($block->getUrl('wishlist/index/add')) ?>?product=' + (selectedProduct?.id || '')"
+                                   class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-6 rounded-md font-semibold transition-colors inline-flex items-center justify-center"
+                                   title="<?= $escaper->escapeHtmlAttr(__('Add to Wishlist')) ?>">
+                                    <i class="fas fa-heart"></i>
+                                </a>
+                            </div>
+                        </form>
+
+                        <!-- View Full Product Link -->
+                        <a :href="selectedProduct?.url"
+                           class="inline-flex items-center space-x-2 text-pink-500 hover:text-pink-600 transition-colors">
+                            <span><?= $escaper->escapeHtml(__('View Full Product Details')) ?></span>
+                            <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<?php endif; ?>

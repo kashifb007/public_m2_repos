@@ -1,0 +1,99 @@
+<?php
+/**
+ * Comment form template
+ *
+ * @var $block \DreamSites\Blog\Block\CommentList
+ */
+?>
+
+<div class="blog-comment-form-wrapper">
+    <h3><?= __('Leave a Comment') ?></h3>
+
+    <form class="blog-comment-form"
+          action="<?= $block->escapeUrl($block->getFormAction()) ?>"
+          method="post"
+          id="comment-form"
+          data-mage-init='{"validation":{}}'>
+
+        <?= $block->getBlockHtml('formkey') ?>
+
+        <input type="hidden" name="page_id" value="<?= (int)$block->getPageId() ?>" />
+
+        <fieldset class="fieldset">
+            <div class="field name required">
+                <label class="label" for="author_name">
+                    <span><?= __('Name') ?></span>
+                </label>
+                <div class="control">
+                    <input type="text"
+                           name="author_name"
+                           id="author_name"
+                           class="input-text"
+                           data-validate="{required:true}"
+                           required
+                           maxlength="255" />
+                </div>
+            </div>
+
+            <div class="field email required">
+                <label class="label" for="author_email">
+                    <span><?= __('Email') ?></span>
+                </label>
+                <div class="control">
+                    <input type="email"
+                           name="author_email"
+                           id="author_email"
+                           class="input-text"
+                           required
+                           data-validate="{required:true, 'validate-email':true}"
+                           maxlength="255" />
+                </div>
+            </div>
+
+            <div class="field comment required">
+                <label class="label" for="content">
+                    <span><?= __('Comment') ?></span>
+                </label>
+                <div class="control">
+                    <textarea name="content"
+                              id="content"
+                              class="input-text"
+                              rows="5"
+                              required
+                              data-validate="{required:true}"
+                              maxlength="5000"></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="action submit primary">
+                    <span><?= __('Submit Comment') ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Comments List -->
+<?php $comments = $block->getComments(); ?>
+<?php if ($comments->getSize()): ?>
+    <div class="blog-comments-list">
+        <h3><?= __('Comments') ?> (<?= (int)$comments->getSize() ?>)</h3>
+
+        <?php foreach ($comments as $comment): ?>
+            <div class="comment-item" id="comment-<?= (int)$comment->getCommentId() ?>">
+                <div class="comment-author">
+                    <strong><?= $block->escapeHtml($comment->getAuthorName()) ?></strong>
+                    <span class="comment-date">
+                        <?= $block->escapeHtml($block->formatDate($comment->getCreatedAt(), \IntlDateFormatter::MEDIUM)) ?>
+                    </span>
+                </div>
+                <div class="comment-content">
+                    <?= $block->escapeHtml($comment->getContent()) ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
